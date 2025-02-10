@@ -73,11 +73,12 @@ ErrorMessage.propTypes = {
 };
 
 function Person({ person }) {
-  const { name, email } = person;
+  const { name, affiliation, email } = person;
   return (
     <Link to={name}>
       <div className="person-container">
         <h2>{name}</h2>
+        <p> Affiliation: {affiliation}</p>
         <p>
           Email: {email}
         </p>
@@ -89,6 +90,7 @@ Person.propTypes = {
   person: propTypes.shape({
     name: propTypes.string.isRequired,
     email: propTypes.string.isRequired,
+    affiliation: propTypes.string.isRequired,
   }).isRequired,
 };
 
