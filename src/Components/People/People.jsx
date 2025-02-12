@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
  
 import { BACKEND_URL } from '../../constants';
 
+
 const PEOPLE_READ_ENDPOINT = `${BACKEND_URL}/people`;
 const PEOPLE_CREATE_ENDPOINT = `${BACKEND_URL}/people/create`;
 
@@ -17,19 +18,30 @@ function AddPersonForm({
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [affiliation, setAffiliation] = useState('');
+  const [roles, setRoles] = useState([]); 
+
 
   const changeName = (event) => { setName(event.target.value); };
   const changeEmail = (event) => { setEmail(event.target.value); };
   const changeAffiliation = (event) => { setAffiliation(event.target.value); };
+  const changeRoles = (event) => {
+    const selectedRoles = Array.from(event.target.selectedOptions, option => option.value);
+    setRoles(selectedRoles);
+  };
 
   const addPerson = (event) => {
     event.preventDefault();
     const newPerson = {
       name: name,
       email: email,
-      affiliation: affiliation
+      affiliation: affiliation,
+      role: [roles] 
     }
-    axios.put(PEOPLE_CREATE_ENDPOINT, newPerson)
+    axios.put(PEOPLE_CREATE_ENDPOINT, newPerson, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      } })
       .then(fetchPeople)
       .catch((error) => { setError(`There was a problem adding the person. ${error}`); });
   };
@@ -49,6 +61,13 @@ function AddPersonForm({
         Affiliation
       </label>
       <input required type="text" id="affiliation" onChange={changeAffiliation} />
+      <label htmlFor="roles">Roles</label>
+      <select id="roles" multiple onChange={changeRoles}>
+        <option value="AU">AU</option>
+        <option value="Admin">Admin</option>
+        <option value="Viewer">Viewer</option>
+        {/* Add more role options as needed */}
+      </select>
       <button type="button" onClick={cancel}>Cancel</button>
       <button type="submit" onClick={addPerson}>Submit</button>
     </form>
@@ -73,7 +92,8 @@ ErrorMessage.propTypes = {
 };
 
 function Person({ person }) {
-  const { name, affiliation, email } = person;
+  console.log('Person object:', person);
+  const { name, affiliation, email, roles } = person;
   return (
     <Link to={name}>
       <div className="person-container">
@@ -82,6 +102,7 @@ function Person({ person }) {
         <p>
           Email: {email}
         </p>
+        <p>Roles: {Array.isArray(roles) && roles.length > 0 ? roles.join(', ') : 'No roles assigned'}</p>
       </div>
     </Link>
   );
@@ -91,6 +112,7 @@ Person.propTypes = {
     name: propTypes.string.isRequired,
     email: propTypes.string.isRequired,
     affiliation: propTypes.string.isRequired,
+    roles: propTypes.array
   }).isRequired,
 };
 
