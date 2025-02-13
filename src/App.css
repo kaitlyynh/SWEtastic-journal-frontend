@@ -164,3 +164,9 @@ nav a:focus {
   margin: 0;
   font-size: 1.5rem;
 }
+
+#roles option {
+  margin-top: 10px;
+  padding: 6px;
+  font-size: 15px;
+}

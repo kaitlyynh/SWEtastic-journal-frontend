@@ -61,15 +61,20 @@ function AddPersonForm({
         Affiliation
       </label>
       <input required type="text" id="affiliation" onChange={changeAffiliation} />
-      <label htmlFor="roles">Roles</label>
-      <select id="roles" multiple onChange={changeRoles}>
-        <option value="AU">AU</option>
-        <option value="Admin">Admin</option>
-        <option value="Viewer">Viewer</option>
-        {/* Add more role options as needed */}
-      </select>
-      <button type="button" onClick={cancel}>Cancel</button>
-      <button type="submit" onClick={addPerson}>Submit</button>
+      <label htmlFor="roles">
+        Roles
+      </label> <br/> <br/>
+        <select id="roles" multiple onChange={changeRoles}>
+          <option value="AU">AU</option>
+          <option value="Admin">Admin</option>
+          <option value="Viewer">Viewer</option>
+          {/* Add more role options as needed */}
+        </select>
+      <div>
+        <button type="button" onClick={cancel}>Cancel</button>
+        <button type="submit" onClick={addPerson}>Submit</button>
+      </div>
+      
     </form>
   );
 }
