@@ -18,16 +18,13 @@ function AddPersonForm({
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [affiliation, setAffiliation] = useState('');
-  const [roles, setRoles] = useState([]); 
+  const [roles, setRoles] = useState([]);
 
 
   const changeName = (event) => { setName(event.target.value); };
   const changeEmail = (event) => { setEmail(event.target.value); };
   const changeAffiliation = (event) => { setAffiliation(event.target.value); };
-  const changeRoles = (event) => {
-    const selectedRoles = Array.from(event.target.selectedOptions, option => option.value);
-    setRoles(selectedRoles);
-  };
+  const changeRoles = (event) => { setRoles(event.target.value); };
 
   const addPerson = (event) => {
     event.preventDefault();
@@ -35,7 +32,7 @@ function AddPersonForm({
       name: name,
       email: email,
       affiliation: affiliation,
-      role: [roles] 
+      roles: roles 
     }
     axios.put(PEOPLE_CREATE_ENDPOINT, newPerson, {
       headers: {
@@ -107,7 +104,7 @@ function Person({ person }) {
         <p>
           Email: {email}
         </p>
-        <p>Roles: {Array.isArray(roles) && roles.length > 0 ? roles.join(', ') : 'No roles assigned'}</p>
+        <p>Roles: {roles}</p>
       </div>
     </Link>
   );
@@ -117,7 +114,7 @@ Person.propTypes = {
     name: propTypes.string.isRequired,
     email: propTypes.string.isRequired,
     affiliation: propTypes.string.isRequired,
-    roles: propTypes.array
+    roles: propTypes.oneOfType([propTypes.string, propTypes.array])
   }).isRequired,
 };
 
