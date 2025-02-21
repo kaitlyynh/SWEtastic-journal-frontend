@@ -9,6 +9,7 @@ import { BACKEND_URL } from '../../constants';
 const PEOPLE_READ_ENDPOINT = `${BACKEND_URL}/people`;
 const PEOPLE_CREATE_ENDPOINT = `${BACKEND_URL}/people/create`;
 
+
 function AddPersonForm({
   visible,
   cancel,

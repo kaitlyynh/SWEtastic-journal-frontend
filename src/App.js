@@ -10,6 +10,7 @@ import './App.css';
 
 import Navbar from './Components/Navbar';
 import People from './Components/People';
+import Home from './Components/Home';
 
 function PersonPage() {
   const { name } = useParams();
@@ -25,6 +26,7 @@ function App() {
          <Route index element={<Login />} /> */}
         <Route path="people" element={<People />} />
         <Route path="people/:name" element={<PersonPage />} />
+        <Route path="home" element={<Home />} />
       </Routes>
     </BrowserRouter>
   );
