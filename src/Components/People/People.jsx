@@ -155,14 +155,21 @@ function People() {
     axios.put(`${BACKEND_URL}/people/updateName/${email}/${newName}`)
       .then(response => {
         console.log('Update response:', response.data);
-        fetchPeople(); // Refresh the list after updating
+  
+        // update the local state
+        setPeople(prevPeople => prevPeople.map(person =>
+          person.email === email ? { ...person, name: newName } : person
+        ));
+  
+        // fetch the latest list from the backend to ensure accuracy, bc would update wrong one
+        fetchPeople();
       })
       .catch(error => {
         console.error('Error updating person:', error.response || error);
         setError(`There was a problem updating the person: ${error}`);
       });
-  };  
-
+  };
+  
   const showAddPersonForm = () => { setAddingPerson(true); };
   const hideAddPersonForm = () => { setAddingPerson(false); };
 
@@ -185,7 +192,6 @@ function People() {
         setError={setError}
       />
       {error && <ErrorMessage message={error} />}
-      {/* {people.map((person) => <Person key={person.name} person={person} />)} */}
       {people.map((person) => (
         <Person
           key={person.name}
