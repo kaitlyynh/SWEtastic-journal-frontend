@@ -94,10 +94,16 @@ ErrorMessage.propTypes = {
   message: propTypes.string.isRequired,
 };
 
-function Person({ person }) {
+function Person({ person, updatePersonName }) {
   console.log('Person object:', person);
   const { name, affiliation, email, roles } = person;
+  const [newName, setNewName] = useState(name);
+
+  const handleNameChange = (e) => setNewName(e.target.value);
+  const handleUpdate = () => updatePersonName(email, newName);
+
   return (
+    <div>
     <Link to={name}>
       <div className="person-container">
         <h2>{name}</h2>
@@ -108,6 +114,14 @@ function Person({ person }) {
         <p>Roles: {roles}</p>
       </div>
     </Link>
+     <input
+     type="text"
+     value={newName}
+     onChange={handleNameChange}
+     placeholder="Enter new name"
+   />
+   <button onClick={handleUpdate}>Update Name</button>
+ </div>
   );
 }
 Person.propTypes = {
@@ -117,6 +131,7 @@ Person.propTypes = {
     affiliation: propTypes.string.isRequired,
     roles: propTypes.oneOfType([propTypes.string, propTypes.array])
   }).isRequired,
+  updatePersonName: propTypes.func.isRequired,
 };
 
 function peopleObjectToArray(Data) {
@@ -135,6 +150,18 @@ function People() {
       .then(({ data }) => { setPeople(peopleObjectToArray(data)) })
       .catch((error) => setError(`There was a problem retrieving the list of people. ${error}`));
   };
+
+  const updatePersonName = (email, newName) => {
+    axios.put(`${BACKEND_URL}/people/updateName/${email}/${newName}`)
+      .then(response => {
+        console.log('Update response:', response.data);
+        fetchPeople(); // Refresh the list after updating
+      })
+      .catch(error => {
+        console.error('Error updating person:', error.response || error);
+        setError(`There was a problem updating the person: ${error}`);
+      });
+  };  
 
   const showAddPersonForm = () => { setAddingPerson(true); };
   const hideAddPersonForm = () => { setAddingPerson(false); };
@@ -158,7 +185,14 @@ function People() {
         setError={setError}
       />
       {error && <ErrorMessage message={error} />}
-      {people.map((person) => <Person key={person.name} person={person} />)}
+      {/* {people.map((person) => <Person key={person.name} person={person} />)} */}
+      {people.map((person) => (
+        <Person
+          key={person.name}
+          person={person}
+          updatePersonName={updatePersonName} // Pass the function as a prop
+  />
+))}
     </div>
   );
 }
