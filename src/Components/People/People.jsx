@@ -136,9 +136,10 @@ Person.propTypes = {
     name: propTypes.string.isRequired,
     email: propTypes.string.isRequired,
     affiliation: propTypes.string.isRequired,
-    roles: propTypes.oneOfType([propTypes.string, propTypes.array])
+    roles: propTypes.oneOfType([propTypes.string, propTypes.array]),
   }).isRequired,
   updatePersonName: propTypes.func.isRequired,
+  fetchPeople: propTypes.func.isRequired, // Added for deletion functionality
 };
 
 function peopleObjectToArray(Data) {
