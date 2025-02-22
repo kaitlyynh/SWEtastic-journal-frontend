@@ -94,34 +94,41 @@ ErrorMessage.propTypes = {
   message: propTypes.string.isRequired,
 };
 
-function Person({ person, updatePersonName }) {
-  console.log('Person object:', person);
+function Person({ person, updatePersonName, fetchPeople }) {
   const { name, affiliation, email, roles } = person;
   const [newName, setNewName] = useState(name);
 
   const handleNameChange = (e) => setNewName(e.target.value);
   const handleUpdate = () => updatePersonName(email, newName);
 
+  const deletePerson = () => {
+    axios
+      .delete(`${PEOPLE_READ_ENDPOINT}/${email}`)
+      .then(fetchPeople)
+      .catch(error => console.error("Error deleting person:", error));
+  };
+
   return (
     <div>
-    <Link to={name}>
-      <div className="person-container">
-        <h2>{name}</h2>
-        <p> Affiliation: {affiliation}</p>
-        <p>
-          Email: {email}
-        </p>
-        <p>Roles: {roles}</p>
-      </div>
-    </Link>
-     <input
-     type="text"
-     value={newName}
-     onChange={handleNameChange}
-     placeholder="Enter new name"
-   />
-   <button onClick={handleUpdate}>Update Name</button>
- </div>
+      <Link to={name}>
+        <div className="person-container">
+          <h2>{name}</h2>
+          <p>Affiliation: {affiliation}</p>
+          <p>Email: {email}</p>
+          <p>Roles: {roles}</p>
+        </div>
+      </Link>
+      <input
+        type="text"
+        value={newName}
+        onChange={handleNameChange}
+        placeholder="Enter new name"
+      />
+      <button onClick={handleUpdate}>Update Name</button>
+      <button onClick={deletePerson} style={{ marginLeft: '10px', color: 'red' }}>
+        Delete Person
+      </button>
+    </div>
   );
 }
 Person.propTypes = {
