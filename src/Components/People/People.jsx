@@ -104,7 +104,7 @@ function Person({ person, updatePersonName, fetchPeople }) {
   const deletePerson = () => {
     axios
       .delete(`${PEOPLE_READ_ENDPOINT}/${email}`)
-      .then(fetchPeople)
+      .then(() => {fetchPeople()})
       .catch(error => console.error("Error deleting person:", error));
   };
 
@@ -202,9 +202,10 @@ function People() {
       {error && <ErrorMessage message={error} />}
       {people.map((person) => (
         <Person
-          key={person.name}
+          key={person.email}
           person={person}
           updatePersonName={updatePersonName} // Pass the function as a prop
+          fetchPeople={fetchPeople}
   />
 ))}
     </div>
