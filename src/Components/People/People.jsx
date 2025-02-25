@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
  
 import { BACKEND_URL } from '../../constants';
-
+import trashIcon from '../People/assets/trashcan.png'
 
 const PEOPLE_READ_ENDPOINT = `${BACKEND_URL}/people`;
 const PEOPLE_CREATE_ENDPOINT = `${BACKEND_URL}/people/create`;
@@ -120,6 +120,7 @@ function Person({ person, fetchPeople }) {
         </div>
       </Link>
       <button onClick={deletePerson} style={{ marginLeft: '10px', color: 'red' }}>
+        <img src={trashIcon} alt="Delete Person" width="20" height="20"></img>
         Delete Person
       </button>
     </div>
