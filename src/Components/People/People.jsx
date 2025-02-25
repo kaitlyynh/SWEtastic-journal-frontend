@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
  
 import { BACKEND_URL } from '../../constants';
 import trashIcon from '../People/assets/trashcan.png'
+import addUserIcon from '../People/assets/user.png'
 
 const PEOPLE_READ_ENDPOINT = `${BACKEND_URL}/people`;
 const PEOPLE_CREATE_ENDPOINT = `${BACKEND_URL}/people/create`;
@@ -165,6 +166,7 @@ function People() {
           View All People
         </h1>
         <button type="button" onClick={showAddPersonForm}>
+          <img src={addUserIcon} alt="Add a Person" height="25" width="25"></img>
           Add a Person
         </button>
       </header>
