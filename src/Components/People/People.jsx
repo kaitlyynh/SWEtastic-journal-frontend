@@ -94,13 +94,8 @@ ErrorMessage.propTypes = {
   message: propTypes.string.isRequired,
 };
 
-function Person({ person, updatePersonName, fetchPeople }) {
+function Person({ person, fetchPeople }) {
   const { name, affiliation, email, roles } = person;
-  const [newName, setNewName] = useState(name);
-
-  const handleNameChange = (e) => setNewName(e.target.value);
-  const handleUpdate = () => updatePersonName(email, newName);
-
   const deletePerson = () => {
     axios
       .delete(`${PEOPLE_READ_ENDPOINT}/${email}`)
@@ -110,7 +105,7 @@ function Person({ person, updatePersonName, fetchPeople }) {
 
   return (
     <div>
-      <Link to={name}>
+      <Link to={`/people/${email}`}>
         <div className="person-container">
           <h2>{name}</h2>
           <p>Affiliation: {affiliation}</p>
@@ -118,13 +113,6 @@ function Person({ person, updatePersonName, fetchPeople }) {
           <p>Roles: {roles}</p>
         </div>
       </Link>
-      <input
-        type="text"
-        value={newName}
-        onChange={handleNameChange}
-        placeholder="Enter new name"
-      />
-      <button onClick={handleUpdate}>Update Name</button>
       <button onClick={deletePerson} style={{ marginLeft: '10px', color: 'red' }}>
         Delete Person
       </button>
@@ -138,7 +126,6 @@ Person.propTypes = {
     affiliation: propTypes.string.isRequired,
     roles: propTypes.oneOfType([propTypes.string, propTypes.array]),
   }).isRequired,
-  updatePersonName: propTypes.func.isRequired,
   fetchPeople: propTypes.func.isRequired, // Added for deletion functionality
 };
 
@@ -158,26 +145,7 @@ function People() {
       .then(({ data }) => { setPeople(peopleObjectToArray(data)) })
       .catch((error) => setError(`There was a problem retrieving the list of people. ${error}`));
   };
-
-  const updatePersonName = (email, newName) => {
-    axios.put(`${BACKEND_URL}/people/updateName/${email}/${newName}`)
-      .then(response => {
-        console.log('Update response:', response.data);
-  
-        // update the local state
-        setPeople(prevPeople => prevPeople.map(person =>
-          person.email === email ? { ...person, name: newName } : person
-        ));
-  
-        // fetch the latest list from the backend to ensure accuracy, bc would update wrong one
-        fetchPeople();
-      })
-      .catch(error => {
-        console.error('Error updating person:', error.response || error);
-        setError(`There was a problem updating the person: ${error}`);
-      });
-  };
-  
+    
   const showAddPersonForm = () => { setAddingPerson(true); };
   const hideAddPersonForm = () => { setAddingPerson(false); };
 
@@ -204,7 +172,6 @@ function People() {
         <Person
           key={person.email}
           person={person}
-          updatePersonName={updatePersonName} // Pass the function as a prop
           fetchPeople={fetchPeople}
   />
 ))}
