@@ -11,6 +11,7 @@ function PeopleDetails() {
   const { person } = location.state || {}; // get the passed person object
 
   const [newName, setNewName] = useState(person?.name || '');
+  const [newAffiliation, setNewAffiliation] = useState(person?.affiliation || '');
   const [error, setError] = useState('');
 
   if (!person) {
@@ -25,6 +26,14 @@ function PeopleDetails() {
       })
       .catch((err) => setError(`Error updating name: ${err.message}`));
   };
+  const handleAffiliationUpdate = () => {
+    axios
+      .put(`${BACKEND_URL}/people/updateAffiliation/${person.email}/${newAffiliation}`)
+      .then(() => {
+        navigate('/people'); 
+      })
+      .catch((err) => setError(`Error updating affiliation: ${err.message}`));
+  };
 
   return (
     <div>
@@ -38,6 +47,17 @@ function PeopleDetails() {
           onChange={(e) => setNewName(e.target.value)}
         />
         <button type="button" onClick={handleUpdate}>Update</button>
+      </form> 
+      <br/>
+      <form>
+      <label htmlFor="affiliation">Affiliation:</label>
+          <input
+            type="text"
+            id="affiliation"
+            value={newAffiliation}
+            onChange={(e) => setNewAffiliation(e.target.value)}
+          />
+        <button type="button" onClick={handleAffiliationUpdate}>Update Affiliation</button>
       </form>
       {error && <p>{error}</p>}
     </div>
