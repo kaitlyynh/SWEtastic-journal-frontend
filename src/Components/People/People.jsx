@@ -41,7 +41,13 @@ function AddPersonForm({
         'Accept': 'application/json',
       } })
       .then(fetchPeople)
-      .catch((error) => { setError(`There was a problem adding the person. ${error}`); });
+      .catch((error) => {
+        if (error.response && error.response.data && error.response.data.message) {
+          setError(`Error: ${error.response.data.message}`);
+        } else {
+          setError(`There was an unexpected error adding the person. ${error}`);
+        }
+      });
   };
 
   if (!visible) return null;
