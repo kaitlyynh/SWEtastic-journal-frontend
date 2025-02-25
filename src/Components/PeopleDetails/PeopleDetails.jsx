@@ -1,57 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import axios from 'axios';
 import { BACKEND_URL } from '../../constants';
+import React from 'react';
 
-const PEOPLE_READ_ENDPOINT = `${BACKEND_URL}/people`;
 
-const PersonDetails = () => {
-  const { email } = useParams();  // extract email from URL
-  console.log('Email from URL:', email); 
-  const [person, setPerson] = useState(null);
-  const [newName, setNewName] = useState('');
-  const [error, setError] = useState('');
+function PeopleDetails() {
+  const location = useLocation();
   const navigate = useNavigate();
+  const { person } = location.state || {}; // get the passed person object
 
-  const fetchPerson = () => {
-    console.log('Fetching person with email:', email);  // log email to check it's correct
-    axios.get(PEOPLE_READ_ENDPOINT)
-      .then(({ data }) => {
-        console.log('Fetched data:', data);  
-        // convert the object to an array and find the person with the matching email
-        const personFound = Object.values(data).find(person => person.email === email);
-        
-        if (personFound) {
-          setPerson(personFound);
-          setNewName(personFound.name || ''); 
-        } else {
-          setError('Person not found.');
-        }
-      })
-      .catch((error) => {
-        console.error('Fetch error:', error);  
-        setError(`There was a problem retrieving the person's details. ${error}`);
-      });
-  };
-
-  const handleUpdate = () => {
-    if (person && person.email) {
-      axios.put(`${BACKEND_URL}/people/updateName/${person.email}/${newName}`)
-        .then(() => navigate(`/people`))  // redirect to people page for now 
-        
-        .catch(err => setError(`Error updating name: ${err}`));
-    } else {
-      setError('Email is missing for this person.');
-    }
-  };
-
-  useEffect(() => {
-    if (email) fetchPerson();  // only fetch if there's an email in the params
-  }, [email]);
+  const [newName, setNewName] = useState(person?.name || '');
+  const [error, setError] = useState('');
 
   if (!person) {
-    return <div>Loading person details...</div>;
+    return <div>No person data available.</div>;
   }
+
+  const handleUpdate = () => {
+    axios
+      .put(`${BACKEND_URL}/people/updateName/${person.email}/${newName}`)
+      .then(() => {
+        navigate('/people'); // redirect after updating
+      })
+      .catch((err) => setError(`Error updating name: ${err.message}`));
+  };
 
   return (
     <div>
@@ -69,6 +42,6 @@ const PersonDetails = () => {
       {error && <p>{error}</p>}
     </div>
   );
-};
+}
 
-export default PersonDetails;
+export default PeopleDetails;

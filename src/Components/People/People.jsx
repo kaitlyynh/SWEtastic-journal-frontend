@@ -105,7 +105,7 @@ function Person({ person, fetchPeople }) {
 
   return (
     <div>
-      <Link to={`/people/${email}`}>
+      <Link to={`/people/${name}`} state={{ person }}>
         <div className="person-container">
           <h2>{name}</h2>
           <p>Affiliation: {affiliation}</p>
