@@ -102,13 +102,20 @@ ErrorMessage.propTypes = {
 };
 
 function Person({ person, fetchPeople }) {
+  const [error, setError] = useState('');
   const { name, affiliation, email, roles } = person;
   const deletePerson = () => {
     axios
       .delete(`${PEOPLE_READ_ENDPOINT}/${email}`)
       .then(() => {fetchPeople()})
-      .catch(error => console.error("Error deleting person:", error));
-  };
+      .catch((error) => {
+        if (error.response && error.response.data && error.response.data.message) {
+          setError(`Error: ${error.response.data.message}`);
+        } else {
+          setError(`There was an unexpected error deleting the person. ${error}`);
+        }
+      });
+    };
 
   return (
     <div>
@@ -124,6 +131,7 @@ function Person({ person, fetchPeople }) {
         <img src={trashIcon} alt="Delete Person" width="20" height="20"></img>
         Delete Person
       </button>
+      {error && <ErrorMessage message={error} />}
     </div>
   );
 }
@@ -151,8 +159,14 @@ function People() {
   const fetchPeople = () => {
     axios.get(PEOPLE_READ_ENDPOINT)
       .then(({ data }) => { setPeople(peopleObjectToArray(data)) })
-      .catch((error) => setError(`There was a problem retrieving the list of people. ${error}`));
-  };
+      .catch((error) => {
+        if (error.response && error.response.data && error.response.data.message) {
+          setError(`Error: ${error.response.data.message}`);
+        } else {
+          setError(`There was an unexpected error fetching the person. ${error}`);
+        }
+      });
+    };
     
   const showAddPersonForm = () => { setAddingPerson(true); };
   const hideAddPersonForm = () => { setAddingPerson(false); };

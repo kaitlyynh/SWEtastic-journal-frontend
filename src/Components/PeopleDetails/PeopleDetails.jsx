@@ -18,48 +18,67 @@ function PeopleDetails() {
     return <div>No person data available.</div>;
   }
 
-  const handleUpdate = () => {
+  const UPDATE_NAME_EP =`${BACKEND_URL}/people/updateName/${person.email}/${newName}`
+  const UPDATE_AFFIL_EP =`${BACKEND_URL}/people/updateAffiliation/${person.email}/${newAffiliation}`
+  
+  const UpdateName = () => {
     axios
-      .put(`${BACKEND_URL}/people/updateName/${person.email}/${newName}`)
+      .put(UPDATE_NAME_EP)
       .then(() => {
         navigate('/people'); // redirect after updating
       })
-      .catch((err) => setError(`Error updating name: ${err.message}`));
-  };
-  const handleAffiliationUpdate = () => {
+      .catch((error) => {
+        if (error.response && error.response.data && error.response.data.message) {
+          setError(`Error: ${error.response.data.message}`);
+        } else {
+          setError(`There was an unexpected error. ${error}`);
+        }
+      });
+    };
+
+  const UpdateAffiliation = () => {
     axios
-      .put(`${BACKEND_URL}/people/updateAffiliation/${person.email}/${newAffiliation}`)
+      .put(UPDATE_AFFIL_EP)
       .then(() => {
-        navigate('/people'); 
+        navigate('/people'); // redirect after updating
       })
-      .catch((err) => setError(`Error updating affiliation: ${err.message}`));
-  };
+      .catch((error) => {
+        if (error.response && error.response.data && error.response.data.message) {
+          setError(`Error: ${error.response.data.message}`);
+        } else {
+          setError(`There was an unexpected error. ${error}`);
+        }
+      });
+    };
 
   return (
     <div>
       <h1>Person Details</h1>
       <form>
-        <label htmlFor="name">Name:</label>
+        {/* Update Name */}
+        <label htmlFor="name">Enter New Name:</label>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
         <input
           type="text"
           id="name"
           value={newName}
           onChange={(e) => setNewName(e.target.value)}
         />
-        <button type="button" onClick={handleUpdate}>Update</button>
-      </form> 
-      <br/>
-      <form>
-      <label htmlFor="affiliation">Affiliation:</label>
-          <input
-            type="text"
-            id="affiliation"
-            value={newAffiliation}
-            onChange={(e) => setNewAffiliation(e.target.value)}
-          />
-        <button type="button" onClick={handleAffiliationUpdate}>Update Affiliation</button>
+        <button type="button" onClick={UpdateName}>Update Name</button>
+      </div>
+      {/* Update Affiliation */}
+      <label htmlFor="name">Enter New Name:</label>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <input
+          type="text"
+          id="affiliation"
+          value={newAffiliation}
+          onChange={(e) => setNewAffiliation(e.target.value)}
+        />
+        <button type="button" onClick={UpdateAffiliation}>Update Affiliation</button>
+      </div>
       </form>
-      {error && <p>{error}</p>}
+      {error && <p style= {{color:'red'}}>{error}</p>}
     </div>
   );
 }
