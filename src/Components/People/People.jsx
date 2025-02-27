@@ -9,6 +9,7 @@ import addUserIcon from '../People/assets/user.png'
 
 const PEOPLE_READ_ENDPOINT = `${BACKEND_URL}/people`;
 const PEOPLE_CREATE_ENDPOINT = `${BACKEND_URL}/people/create`;
+const ROLES_ENDPOINT = `${BACKEND_URL}/roles`;
 
 
 function AddPersonForm({
@@ -50,6 +51,19 @@ function AddPersonForm({
         }
       });
   };
+
+  const getRoles = () => {
+    axios.get(ROLES_ENDPOINT)
+    .then(console.log)
+    .catch((error) => {
+      if (error.response && error.response.data && error.response.data.message) {
+        setError(`Error: ${error.response.data.message}`);
+      } else {
+        setError(`There was an unexpected error adding the person. ${error}`);
+      }
+    });
+  }
+  getRoles();
 
   if (!visible) return null;
   return (
