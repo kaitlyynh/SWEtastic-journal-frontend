@@ -17,11 +17,12 @@ function AddPersonForm({
   cancel,
   fetchPeople,
   setError,
+  roleOptions,
 }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [affiliation, setAffiliation] = useState('');
-  const [roles, setRoles] = useState([]);
+  const [roles, setRoles] = useState('');
 
 
   const changeName = (event) => { setName(event.target.value); };
@@ -52,18 +53,21 @@ function AddPersonForm({
       });
   };
 
-  const getRoles = () => {
-    axios.get(ROLES_ENDPOINT)
-    .then(console.log)
-    .catch((error) => {
-      if (error.response && error.response.data && error.response.data.message) {
-        setError(`Error: ${error.response.data.message}`);
-      } else {
-        setError(`There was an unexpected error adding the person. ${error}`);
-      }
-    });
-  }
-  getRoles();
+  // const getRoles = () => {
+  //   axios.get(ROLES_ENDPOINT)
+  //   .then(({data}) => {
+  //     console.log(data);
+  //     setRoleOptions(data);
+  //   })
+  //   .catch((error) => {
+  //     if (error.response && error.response.data && error.response.data.message) {
+  //       setError(`Error: ${error.response.data.message}`);
+  //     } else {
+  //       setError(`There was an unexpected error adding the person. ${error}`);
+  //     }
+  //   });
+  // }
+  // useEffect(getRoles,[]);
 
   if (!visible) return null;
   return (
@@ -83,11 +87,14 @@ function AddPersonForm({
       <label htmlFor="roles">
         Roles
       </label> <br/> <br/>
-        <select id="roles" multiple onChange={changeRoles}>
-          <option value="AU">AU</option>
-          <option value="Admin">Admin</option>
-          <option value="Viewer">Viewer</option>
-          {/* Add more role options as needed */}
+        <select required name="role" onChange={changeRoles}>
+          {
+            Object.keys(roleOptions).map((code) =>(
+              <option key={code} value={code}>
+                {roleOptions[code]}
+              </option>
+            ))
+          }
         </select>
       <div>
         <button type="button" onClick={cancel}>Cancel</button>
@@ -102,6 +109,7 @@ AddPersonForm.propTypes = {
   cancel: propTypes.func.isRequired,
   fetchPeople: propTypes.func.isRequired,
   setError: propTypes.func.isRequired,
+  roleOptions: propTypes.object.isRequired,
 };
 
 function ErrorMessage({ message }) {
@@ -115,9 +123,10 @@ ErrorMessage.propTypes = {
   message: propTypes.string.isRequired,
 };
 
-function Person({ person, fetchPeople }) {
+function Person({ person, fetchPeople,roleMap,}){
   const [error, setError] = useState('');
   const { name, affiliation, email, roles } = person;
+
   const deletePerson = () => {
     axios
       .delete(`${PEOPLE_READ_ENDPOINT}/${email}`)
@@ -138,7 +147,9 @@ function Person({ person, fetchPeople }) {
           <h2>{name}</h2>
           <p>Affiliation: {affiliation}</p>
           <p>Email: {email}</p>
-          <p>Roles: {roles}</p>
+          <p>
+          Roles: {roles.map((role) => (<li key={role}>{ roleMap[role] }</li>))}
+          </p>
         </div>
       </Link>
       <button onClick={deletePerson} style={{ marginLeft: '10px', color: 'red' }}>
@@ -154,9 +165,10 @@ Person.propTypes = {
     name: propTypes.string.isRequired,
     email: propTypes.string.isRequired,
     affiliation: propTypes.string.isRequired,
-    roles: propTypes.oneOfType([propTypes.string, propTypes.array]),
+    roles: propTypes.arrayOf(propTypes.string).isRequired,
   }).isRequired,
   fetchPeople: propTypes.func.isRequired, // Added for deletion functionality
+  roleMap: propTypes.object.isRequired,
 };
 
 function peopleObjectToArray(Data) {
@@ -169,6 +181,7 @@ function People() {
   const [error, setError] = useState('');
   const [people, setPeople] = useState([]);
   const [addingPerson, setAddingPerson] = useState(false);
+  const [roleMap, setRoleMap] = useState({})
 
   const fetchPeople = () => {
     axios.get(PEOPLE_READ_ENDPOINT)
@@ -181,11 +194,27 @@ function People() {
         }
       });
     };
-    
+  
+    const getRoles = () => {
+      axios.get(ROLES_ENDPOINT)
+      .then(({data}) => {
+        setRoleMap(data);
+      })
+      .catch((error) => {
+        if (error.response && error.response.data && error.response.data.message) {
+          setError(`Error: ${error.response.data.message}`);
+        } else {
+          setError(`There was an unexpected error adding the person. ${error}`);
+        }
+      });
+    }
+
   const showAddPersonForm = () => { setAddingPerson(true); };
   const hideAddPersonForm = () => { setAddingPerson(false); };
 
   useEffect(fetchPeople, []);
+  useEffect(getRoles,[]);
+
 
   return (
     <div className="wrapper">
@@ -203,6 +232,7 @@ function People() {
         cancel={hideAddPersonForm}
         fetchPeople={fetchPeople}
         setError={setError}
+        roleOptions={roleMap}
       />
       {error && <ErrorMessage message={error} />}
       {people.map((person) => (
@@ -210,6 +240,7 @@ function People() {
           key={person.email}
           person={person}
           fetchPeople={fetchPeople}
+          roleMap={roleMap}
   />
 ))}
     </div>
