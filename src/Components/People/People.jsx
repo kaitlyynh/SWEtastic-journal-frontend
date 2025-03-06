@@ -71,37 +71,68 @@ function AddPersonForm({
 
   if (!visible) return null;
   return (
-    <form>
-      <label htmlFor="name">
-        Name
-      </label>
-      <input required type="text" id="name" value={name} onChange={changeName} />
-      <label htmlFor="email">
-        Email
-      </label>
-      <input required type="text" id="email" onChange={changeEmail} />
-      <label htmlFor="affiliation">
-        Affiliation
-      </label>
-      <input required type="text" id="affiliation" onChange={changeAffiliation} />
-      <label htmlFor="roles">
-        Roles
-      </label> <br/> <br/>
-        <select required name="role" onChange={changeRoles}>
-          {
-            Object.keys(roleOptions).map((code) =>(
-              <option key={code} value={code}>
-                {roleOptions[code]}
-              </option>
-            ))
-          }
-        </select>
-      <div>
-        <button type="button" onClick={cancel}>Cancel</button>
-        <button type="submit" onClick={addPerson}>Submit</button>
-      </div>
+    // <form>
+    //   <label htmlFor="name">
+    //     Name
+    //   </label>
+    //   <input required type="text" id="name" value={name} onChange={changeName} />
+    //   <label htmlFor="email">
+    //     Email
+    //   </label>
+    //   <input required type="text" id="email" onChange={changeEmail} />
+    //   <label htmlFor="affiliation">
+    //     Affiliation
+    //   </label>
+    //   <input required type="text" id="affiliation" onChange={changeAffiliation} />
+    //   <label htmlFor="roles">
+    //     Roles
+    //   </label> <br/> <br/>
+    //     <select required name="role" onChange={changeRoles}>
+    //       {
+    //         Object.keys(roleOptions).map((code) =>(
+    //           <option key={code} value={code}>
+    //             {roleOptions[code]}
+    //           </option>
+    //         ))
+    //       }
+    //     </select>
+    //   <div>
+    //     <button type="button" onClick={cancel}>Cancel</button>
+    //     <button type="submit" onClick={addPerson}>Submit</button>
+    //   </div>
       
-    </form>
+    // </form>
+    <form className="container p-3 border rounded bg-light">
+  <div className="mb-3">
+    <label htmlFor="name" className="form-label">Name</label>
+    <input required type="text" className="form-control" id="name" value={name} onChange={changeName} />
+  </div>
+  
+  <div className="mb-3">
+    <label htmlFor="email" className="form-label">Email</label>
+    <input required type="email" className="form-control" id="email" onChange={changeEmail} />
+  </div>
+
+  <div className="mb-3">
+    <label htmlFor="affiliation" className="form-label">Affiliation</label>
+    <input required type="text" className="form-control" id="affiliation" onChange={changeAffiliation} />
+  </div>
+
+  <div className="mb-3">
+    <label htmlFor="roles" className="form-label">Roles</label>
+    <select required className="form-select" name="role" onChange={changeRoles}>
+      {Object.keys(roleOptions).map((code) => (
+        <option key={code} value={code}>{roleOptions[code]}</option>
+      ))}
+    </select>
+  </div>
+
+  <div className="d-flex justify-content-between">
+    <button type="button" className="btn btn-secondary" onClick={cancel}>Cancel</button>
+    <button type="submit" className="btn btn-primary" onClick={addPerson}>Submit</button>
+  </div>
+</form>
+
   );
 }
 AddPersonForm.propTypes = {
@@ -141,23 +172,43 @@ function Person({ person, fetchPeople,roleMap,}){
     };
 
   return (
-    <div>
-      <Link to={`/people/${name}`} state={{ person }}>
-        <div className="person-container">
-          <h2>{name}</h2>
-          <p>Affiliation: {affiliation}</p>
-          <p>Email: {email}</p>
-          <p>
-          Roles: {roles.map((role) => (<li key={role}>{ roleMap[role] }</li>))}
-          </p>
-        </div>
-      </Link>
-      <button onClick={deletePerson} style={{ marginLeft: '10px', color: 'red' }}>
-        <img src={trashIcon} alt="Delete Person" width="20" height="20"></img>
-        Delete Person
-      </button>
-      {error && <ErrorMessage message={error} />}
+    // <div>
+    //   <Link to={`/people/${name}`} state={{ person }}>
+    //     <div className="person-container">
+    //       <h2>{name}</h2>
+    //       <p>Affiliation: {affiliation}</p>
+    //       <p>Email: {email}</p>
+    //       <p>
+    //       Roles: {roles.map((role) => (<li key={role}>{ roleMap[role] }</li>))}
+    //       </p>
+    //     </div>
+    //   </Link>
+    //   <button onClick={deletePerson} style={{ marginLeft: '10px', color: 'red' }}>
+    //     <img src={trashIcon} alt="Delete Person" width="20" height="20"></img>
+    //     Delete Person
+    //   </button>
+  <div className="card my-3">
+  <div className="card-body">
+    <Link to={`/people/${name}`} state={{ person }} className="text-decoration-none text-dark">
+    <h5 className="card-title">{name}</h5>
+      <p className="card-text"><strong>Affiliation:</strong> {affiliation}</p>
+      <p className="card-text"><strong>Email:</strong> {email}</p>
+      <p className="card-text"><strong>Roles:</strong></p>
+      <ul className="list-group">
+        {roles.map((role) => (
+          <li key={role} className="list-group-item">{roleMap[role]}</li>
+        ))}
+      </ul>
+    </Link>
+    <button className="btn btn-danger mt-2" onClick={deletePerson}>
+      <img src={trashIcon} alt="Delete" width="20" height="20" className="me-2" />
+      Delete Person
+    </button>
+    {error && <ErrorMessage message={error} />}
     </div>
+  </div>
+// </div> 
+    
   );
 }
 Person.propTypes = {
@@ -217,33 +268,61 @@ function People() {
 
 
   return (
-    <div className="wrapper">
-      <header>
-        <h1>
-          View All People
-        </h1>
-        <button type="button" onClick={showAddPersonForm}>
-          <img src={addUserIcon} alt="Add a Person" height="25" width="25"></img>
-          Add a Person
-        </button>
-      </header>
-      <AddPersonForm
-        visible={addingPerson}
-        cancel={hideAddPersonForm}
-        fetchPeople={fetchPeople}
-        setError={setError}
-        roleOptions={roleMap}
-      />
-      {error && <ErrorMessage message={error} />}
-      {people.map((person) => (
-        <Person
-          key={person.email}
-          person={person}
-          fetchPeople={fetchPeople}
-          roleMap={roleMap}
+//     <div className="wrapper">
+//       <header>
+//         <h1>
+//           View All People
+//         </h1>
+//         <button type="button" onClick={showAddPersonForm}>
+//           <img src={addUserIcon} alt="Add a Person" height="25" width="25"></img>
+//           Add a Person
+//         </button>
+//       </header>
+//       <AddPersonForm
+//         visible={addingPerson}
+//         cancel={hideAddPersonForm}
+//         fetchPeople={fetchPeople}
+//         setError={setError}
+//         roleOptions={roleMap}
+//       />
+//       {error && <ErrorMessage message={error} />}
+//       {people.map((person) => (
+//         <Person
+//           key={person.email}
+//           person={person}
+//           fetchPeople={fetchPeople}
+//           roleMap={roleMap}
+//   />
+// ))}
+//     </div>
+<div className="container mt-4">
+  <header className="d-flex justify-content-between align-items-center mb-3">
+    <h1 className="h3">View All People</h1>
+    <button className="btn btn-success d-flex align-items-center" onClick={showAddPersonForm}>
+      <img src={addUserIcon} alt="Add" width="25" height="25" className="me-2" />
+      Add a Person
+    </button>
+  </header>
+
+  <AddPersonForm
+    visible={addingPerson}
+    cancel={hideAddPersonForm}
+    fetchPeople={fetchPeople}
+    setError={setError}
+    roleOptions={roleMap}
   />
-))}
-    </div>
+
+  {error && <ErrorMessage message={error} />}
+  
+  <div className="row">
+    {people.map((person) => (
+      <div key={person.email} className="col-md-6 col-lg-4">
+        <Person person={person} fetchPeople={fetchPeople} roleMap={roleMap} />
+      </div>
+    ))}
+  </div>
+</div>
+
   );
 }
 

@@ -12,6 +12,7 @@ import Navbar from './Components/Navbar';
 import People from './Components/People';
 import Home from './Components/Home';
 import PersonDetails from './Components/PeopleDetails/PeopleDetails';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 // function PersonPage() {
 //   const { name } = useParams();
