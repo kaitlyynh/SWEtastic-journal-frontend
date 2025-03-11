@@ -12,6 +12,7 @@ import Navbar from './Components/Navbar';
 import People from './Components/People';
 import Home from './Components/Home';
 import PersonDetails from './Components/PeopleDetails/PeopleDetails';
+import Manuscript from './Components/Manuscript/Manuscript';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 // function PersonPage() {
@@ -29,6 +30,7 @@ function App() {
         <Route path="people" element={<People />} />
         <Route path="people/:name" element={<PersonDetails />} />
         <Route path="home" element={<Home />} />
+        <Route path="manuscripts" element={<Manuscript />} />
       </Routes>
     </BrowserRouter>
   );
