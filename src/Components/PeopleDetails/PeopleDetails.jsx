@@ -4,7 +4,6 @@ import axios from 'axios';
 import { BACKEND_URL } from '../../constants';
 import React from 'react';
 
-
 function PeopleDetails() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -14,13 +13,15 @@ function PeopleDetails() {
   const [newName, setNewName] = useState(person?.name || '');
   const [newAffiliation, setNewAffiliation] = useState(person?.affiliation || '');
   const [newRole, setNewRole] = useState(person?.role || '')
+  const [roleOptions, setRoleOptions] = useState({})
   const [error, setError] = useState('');
 
   const PERSON_EP = `${BACKEND_URL}/people/${initialPerson.email}`
   const UPDATE_NAME_EP =`${BACKEND_URL}/people/updateName/${person.email}/${newName}`
   const UPDATE_AFFIL_EP =`${BACKEND_URL}/people/updateAffiliation/${person.email}/${newAffiliation}`
-  const UPDATE_ROLE_EP = `${BACKEND_URL}/people/${person.email}/addRole/${newRole}`
-  // @api.route(f'{PEOPLE_EP}/<string:email>/addRole/<string:role>')
+  const UPDATE_ADD_ROLE_EP = `${BACKEND_URL}/people/${person.email}/addRole/${newRole}`
+  const ROLES_EP = `${BACKEND_URL}/roles`;
+  
   useEffect(() => {
     if (!initialPerson?.email) return;
 
@@ -31,7 +32,16 @@ function PeopleDetails() {
         setNewAffiliation(response.data.affiliation);
       })
       .catch((err) => setError(`Error fetching person details: ${err.message}`));
-  }, [initialPerson?.email]);
+    // Fetch roles
+    axios
+      .get(ROLES_EP)
+      .then(({ data }) => {
+        setRoleOptions(data); // Set role options
+      })
+      .catch((err) => {
+        setError(`Error fetching roles: ${err.message}`);
+      });
+    }, [initialPerson?.email]);
 
   if (!person) {
     return <div>No person data available.</div>;
@@ -67,20 +77,20 @@ function PeopleDetails() {
       });
     };
 
-    const UpdateRole = () => {
-      axios
-        .put(UPDATE_ROLE_EP)
-        .then(() => {
-          navigate('/people'); // redirect after updating
-        })
-        .catch((error) => {
-          if (error.response && error.response.data && error.response.data.message) {
-            setError(`Error: ${error.response.data.message}`);
-          } else {
-            setError(`There was an unexpected error with updating role. ${error}`);
-          }
-        });
-      };
+  const UpdateAddRole = () => {
+    axios.put(UPDATE_ADD_ROLE_EP)
+      .then(() => {
+        navigate('/people'); // redirect after updating
+      })
+      .catch((error) => {
+        if (error.response && error.response.data && error.response.data.message) {
+          setError(`Error: ${error.response.data.message}`);
+        } else {
+          setError(`There was an unexpected error with updating role. ${error}`);
+        }
+      });
+    };
+  
 
   return (
     <div>
@@ -115,18 +125,21 @@ function PeopleDetails() {
           />
           <button type="button" onClick={UpdateAffiliation}>Update Affiliation</button>
         </div>
-        {/* Update Affiliation */}
       </form>
       {/* Update Role(s) */}
-      <label htmlFor="role">Enter new Role:</label>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <input
-            type="text"
-            id="role"
-            value={newRole}
-            onChange={(e) => setNewRole(e.target.value)}
-          />
-          <button type="button" onClick={UpdateRole}>Update Role</button>
+        <label htmlFor="role">Add a new Role:</label>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <select
+              type="text"
+              id="role"
+              value={newRole}
+              onChange={(e) => setNewRole(e.target.value)}
+            >
+              {Object.keys(roleOptions).map((code) => (
+              <option key={code} value={code}>{roleOptions[code]}</option>
+            ))}
+            </select>
+            <button type="button" onClick={UpdateAddRole}>Update Role</button>
         </div>
       {error && <p style= {{color:'red'}}>{error}</p>}
     </div>

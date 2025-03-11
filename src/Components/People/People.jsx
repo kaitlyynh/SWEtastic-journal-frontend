@@ -233,7 +233,7 @@ function People() {
   const [people, setPeople] = useState([]);
   const [addingPerson, setAddingPerson] = useState(false);
   const [roleMap, setRoleMap] = useState({})
-
+  
   const fetchPeople = () => {
     axios.get(PEOPLE_READ_ENDPOINT)
       .then(({ data }) => { setPeople(peopleObjectToArray(data)) })
@@ -246,8 +246,8 @@ function People() {
       });
     };
   
-    const getRoles = () => {
-      axios.get(ROLES_ENDPOINT)
+  const getRoles = () => {
+    axios.get(ROLES_ENDPOINT)
       .then(({data}) => {
         setRoleMap(data);
       })
@@ -259,6 +259,7 @@ function People() {
         }
       });
     }
+  
 
   const showAddPersonForm = () => { setAddingPerson(true); };
   const hideAddPersonForm = () => { setAddingPerson(false); };
