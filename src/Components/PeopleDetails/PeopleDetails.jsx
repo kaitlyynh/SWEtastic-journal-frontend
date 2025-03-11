@@ -15,11 +15,14 @@ function PeopleDetails() {
   const [newRole, setNewRole] = useState(person?.role || '')
   const [roleOptions, setRoleOptions] = useState({})
   const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState(''); // New state for success message
+
 
   const PERSON_EP = `${BACKEND_URL}/people/${initialPerson.email}`
   const UPDATE_NAME_EP =`${BACKEND_URL}/people/updateName/${person.email}/${newName}`
   const UPDATE_AFFIL_EP =`${BACKEND_URL}/people/updateAffiliation/${person.email}/${newAffiliation}`
   const UPDATE_ADD_ROLE_EP = `${BACKEND_URL}/people/${person.email}/addRole/${newRole}`
+  const UPDATE_DELETE_ROLE_EP = `${BACKEND_URL}/people/${person.email}/removeRole/${newRole}`
   const ROLES_EP = `${BACKEND_URL}/roles`;
   
   useEffect(() => {
@@ -32,11 +35,11 @@ function PeopleDetails() {
         setNewAffiliation(response.data.affiliation);
       })
       .catch((err) => setError(`Error fetching person details: ${err.message}`));
-    // Fetch roles
+
     axios
       .get(ROLES_EP)
       .then(({ data }) => {
-        setRoleOptions(data); // Set role options
+        setRoleOptions(data);
       })
       .catch((err) => {
         setError(`Error fetching roles: ${err.message}`);
@@ -51,7 +54,10 @@ function PeopleDetails() {
     axios
       .put(UPDATE_NAME_EP)
       .then(() => {
-        navigate('/people'); // redirect after updating
+        setSuccessMessage('Name has been updated'); 
+        setTimeout(() => {
+          window.location.reload(); // Refresh the page after 2 seconds
+        }, 2000);
       })
       .catch((error) => {
         if (error.response && error.response.data && error.response.data.message) {
@@ -66,7 +72,10 @@ function PeopleDetails() {
     axios
       .put(UPDATE_AFFIL_EP)
       .then(() => {
-        navigate('/people'); // redirect after updating
+        setSuccessMessage('Affiliation has been updated'); 
+        setTimeout(() => {
+          window.location.reload(); // Refresh the page after 2 seconds
+        }, 2000);
       })
       .catch((error) => {
         if (error.response && error.response.data && error.response.data.message) {
@@ -80,17 +89,47 @@ function PeopleDetails() {
   const UpdateAddRole = () => {
     axios.put(UPDATE_ADD_ROLE_EP)
       .then(() => {
-        navigate('/people'); // redirect after updating
+        setSuccessMessage('Role has been added'); 
+        setTimeout(() => {
+          window.location.reload(); // Refresh the page after 2 seconds
+        }, 2000);
       })
       .catch((error) => {
         if (error.response && error.response.data && error.response.data.message) {
           setError(`Error: ${error.response.data.message}`);
         } else {
-          setError(`There was an unexpected error with updating role. ${error}`);
+          setError(`There was an unexpected error with adding role. ${error}`);
         }
       });
     };
   
+  const UpdateDeleteRole = () => {
+    axios.delete(UPDATE_DELETE_ROLE_EP)
+      .then(() => {
+        setSuccessMessage('Role has been Deleted'); 
+        setTimeout(() => {
+          window.location.reload(); // Refresh the page after 2 seconds
+        }, 2000);
+      })
+      .catch((error) => {
+        if (error.response && error.response.data && error.response.data.message) {
+          setError(`Error: ${error.response.data.message}`);
+        } else {
+          setError(`There was an unexpected error with removing role. ${error}`);
+        }
+      });
+  };
+
+
+  const handleReturnToPeople = () => {
+    // Go back to the list of people
+    navigate('/people');  
+  };
+
+  const handleRefreshPage = () => {
+    // Reload the page
+    window.location.reload();  
+  };
 
   return (
     <div>
@@ -127,7 +166,7 @@ function PeopleDetails() {
         </div>
       </form>
       {/* Update Role(s) */}
-        <label htmlFor="role">Add a new Role:</label>
+        <label htmlFor="role">Enter a Role:</label>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <select
               type="text"
@@ -139,9 +178,25 @@ function PeopleDetails() {
               <option key={code} value={code}>{roleOptions[code]}</option>
             ))}
             </select>
-            <button type="button" onClick={UpdateAddRole}>Update Role</button>
+            <button type="button" onClick={UpdateAddRole}>Add New Role</button>
+            <button type="button" onClick={UpdateDeleteRole}>Delete Role</button>
         </div>
       {error && <p style= {{color:'red'}}>{error}</p>}
+      
+       {/* Display success message */}
+       {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
+
+      <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
+      {/* Button to navigate back */}
+      <button type="button" onClick={handleRefreshPage} style={{ marginTop: '20px' }}>
+        Refresh Page
+      </button>
+
+      {/* Button to return to /people */}
+      <button type="button" onClick={handleReturnToPeople} style={{ marginTop: '20px' }} >
+        Return to People List
+      </button>
+      </div>
     </div>
   );
 }
