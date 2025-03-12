@@ -7,6 +7,7 @@ import { BACKEND_URL } from '../../constants';
 import trashIcon from '../People/assets/trashcan.png'
 import addUserIcon from '../People/assets/user.png'
 
+
 const PEOPLE_READ_ENDPOINT = `${BACKEND_URL}/people`;
 const PEOPLE_CREATE_ENDPOINT = `${BACKEND_URL}/people/create`;
 const ROLES_ENDPOINT = `${BACKEND_URL}/roles`;

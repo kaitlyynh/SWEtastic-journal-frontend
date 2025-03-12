@@ -132,37 +132,37 @@ function PeopleDetails() {
   };
 
   return (
-    <div>
-      <h1>Person Details</h1>
-
+    <div className="container mt-4 card shadow-sm p-4">
+      <h1 className="mb-3 text-center mb-4">Person Details</h1>
       {/* Person's Current Info */}
       <p><strong>Email:</strong> {person.email}</p>
       <p><strong>Current Name:</strong> {person.name}</p>
       <p><strong>Current Affiliation:</strong> {person.affiliation}</p>
       <p><strong>Roles:</strong> {person.roles.join(', ')}</p>
-      
       <form>
         {/* Update Name */}
-        <label htmlFor="name">Enter New Name:</label>
+        <label className="form-label" htmlFor="name">Enter New Name</label>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
         <input
+          className="form-control"
           type="text"
           id="name"
           value={newName}
           onChange={(e) => setNewName(e.target.value)}
         />
-        <button type="button" onClick={UpdateName}>Update Name</button>
+        <button className="btn btn-primary" type="button" onClick={UpdateName}>Update Name</button>
         </div>
         {/* Update Affiliation */}
-        <label htmlFor="name">Enter New Name:</label>
+        <label className="form-label" htmlFor="affiliation">Enter New Affiliation</label>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <input
+            className="form-control"
             type="text"
             id="affiliation"
             value={newAffiliation}
             onChange={(e) => setNewAffiliation(e.target.value)}
           />
-          <button type="button" onClick={UpdateAffiliation}>Update Affiliation</button>
+          <button className="btn btn-primary" type="button" onClick={UpdateAffiliation}>Update Affiliation</button>
         </div>
       </form>
       {/* Update Role(s) */}
@@ -178,8 +178,8 @@ function PeopleDetails() {
               <option key={code} value={code}>{roleOptions[code]}</option>
             ))}
             </select>
-            <button type="button" onClick={UpdateAddRole}>Add New Role</button>
-            <button type="button" onClick={UpdateDeleteRole}>Delete Role</button>
+            <button className="btn btn-success" type="button" onClick={UpdateAddRole}>Add New Role</button>
+            <button className="btn btn-danger" type="button" onClick={UpdateDeleteRole}>Delete Role</button>
         </div>
       {error && <p style= {{color:'red'}}>{error}</p>}
       
@@ -188,12 +188,12 @@ function PeopleDetails() {
 
       <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
       {/* Button to navigate back */}
-      <button type="button" onClick={handleRefreshPage} style={{ marginTop: '20px' }}>
+      <button className="btn btn-secondary"type="button" onClick={handleRefreshPage} style={{ marginTop: '20px' }}>
         Refresh Page
       </button>
 
       {/* Button to return to /people */}
-      <button type="button" onClick={handleReturnToPeople} style={{ marginTop: '20px' }} >
+      <button className="btn btn-secondary" type="button" onClick={handleReturnToPeople} style={{ marginTop: '20px' }} >
         Return to People List
       </button>
       </div>
