@@ -4,6 +4,7 @@ import axios from 'axios';
 import { BACKEND_URL } from '../../constants';
 
 const ManuscriptEP = `${BACKEND_URL}/manuscripts`;
+const ManuscriptSearchEP = `${BACKEND_URL}/manuscripts/search`;
 const Manuscript_Create_EP = `${BACKEND_URL}/manuscripts/create`;
 
 function peopleObjectToArray(Data) {
@@ -18,6 +19,7 @@ function Manuscript() {
     const [title, setTitle] = useState('');
     const [author, setAuthor] = useState('');
     const [referees, setReferees] = useState('');
+    const [searchQuery, setSearchQuery] = useState('');
 
     const fetchManuscripts = () => {
         axios.get(ManuscriptEP)
@@ -56,19 +58,40 @@ function Manuscript() {
         });
     };
 
+    const searchManuscripts = (event) => {
+        event.preventDefault();
+        axios
+            .get(`${ManuscriptSearchEP}?query=${searchQuery}`)
+            .then(({ data }) => setManuscripts(data))
+            .catch((error) => setError(`Error searching manuscripts: ${error.message}`));
+    };
+
     useEffect(fetchManuscripts, []);
 
     return (
         <div className="wrapper">
             <header>
                 {error && <p className="error">{error}</p>}
-                
+
+                {/* Search Form */}
+                <form onSubmit={searchManuscripts}>
+                    <input 
+                        type="text" 
+                        placeholder="Search Manuscripts..." 
+                        value={searchQuery} 
+                        onChange={(e) => setSearchQuery(e.target.value)} 
+                    />
+                    <button type="submit">Search</button>
+                </form>
+
+                {/* Display Manuscripts */}
                 <ul>
                     {manuscripts.map((manuscript, index) => (
                         <li key={index}>{manuscript.title} by {manuscript.author}</li>
                     ))}
                 </ul>
 
+                {/* Add Manuscript Form */}
                 <form onSubmit={addManuscript}>
                     <input 
                         type="text" 
