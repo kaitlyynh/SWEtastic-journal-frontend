@@ -3,7 +3,7 @@ github:
 	git push origin main
 
 tests:
-	npx jest
+	npx jest --silent
 
 delpoy: tests
 	git push heroku main

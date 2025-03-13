@@ -4,8 +4,8 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
  
 import { BACKEND_URL } from '../../constants';
-import trashIcon from '../People/assets/trashcan.png'
-import addUserIcon from '../People/assets/user.png'
+import { FaTrashAlt } from "react-icons/fa";
+import { IoMdPersonAdd } from "react-icons/io";
 
 
 const PEOPLE_READ_ENDPOINT = `${BACKEND_URL}/people`;
@@ -202,7 +202,8 @@ function Person({ person, fetchPeople,roleMap,}){
       </ul>
     </Link>
     <button className="btn btn-danger mt-2" onClick={deletePerson}>
-      <img src={trashIcon} alt="Delete" width="20" height="20" className="me-2" />
+      {/* <img src={trashIcon} alt="Delete" width="20" height="20" className="me-2" /> */}
+      <FaTrashAlt />
       Delete Person
     </button>
     {error && <ErrorMessage message={error} />}
@@ -301,7 +302,8 @@ function People() {
   <header className="d-flex justify-content-between align-items-center mb-3">
     <h1 className="h3">View All People</h1>
     <button className="btn btn-success d-flex align-items-center" onClick={showAddPersonForm}>
-      <img src={addUserIcon} alt="Add" width="25" height="25" className="me-2" />
+      {/* <img src={addUserIcon} alt="Add" width="25" height="25" className="me-2" /> */}
+      <IoMdPersonAdd />
       Add a Person
     </button>
   </header>

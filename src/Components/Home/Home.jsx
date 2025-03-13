@@ -25,11 +25,11 @@ function Home(){
   return (
     <div className="wrapper">
             <header> 
-                {error ? (
+                {error && (
                     <p className="error">{error}</p>
-                ) : (
-                    <h2 className="journal-title">{title}</h2>
-                )}
+                )}  
+                {/*In case network call doesn't work "Journal" is displayed*/}
+                <h2 className="journal-title">{title || "Journal"}</h2>
             </header>
         </div>
     );

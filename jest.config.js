@@ -132,6 +132,9 @@ const config = {
   // Allows you to use a custom runner instead of Jest's default test runner
   // runner: "jest-runner",
 
+  // The paths to modules that run some code to configure or set up the testing environment before each test
+  // setupFiles: [],
+
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
   // setupFilesAfterEnv: [],
 
@@ -142,7 +145,10 @@ const config = {
   // snapshotSerializers: [],
 
   // The test environment that will be used for testing
-  // testEnvironment: "jest-environment-node",
+  testEnvironment: "jsdom",
+
+  // Options that will be passed to the testEnvironment
+  testEnvironmentOptions: {},
 
   // Adds a location field to test results
   // testLocationInResults: false,
@@ -187,27 +193,15 @@ const config = {
 
   // Whether to use watchman for file crawling
   // watchman: true,
-  
-  // Options that will be passed to the testEnvironment
-  // testEnvironmentOptions: {
-  //   customExportConditions: [''],
-  // },
-
-  
-  // The paths to modules that run some code to configure or set up the testing environment before each test
-  // setupFiles: ['./jest.environment.js'],
-  
-  testEnvironment: "jsdom",
 
   moduleNameMapper: {
   '\\.(css|less)$': '<rootDir>/test/jest/__mocks__/styleMock.js',
   },
-
   transform: {
-  "\\.jsx?$": "babel-jest"
+  "\\.[jt]sx?$": "babel-jest"
   },
-
-  transformIgnorePatterns: ["node_modules/(?!axios|@bundled-es-modules|jest-fixed-jsdom)"],
+  transformIgnorePatterns: ["node_modules/(?!axios)"]
+  
 };
 
 module.exports = config;

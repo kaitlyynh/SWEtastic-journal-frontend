@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { BACKEND_URL } from '../../constants';
@@ -6,7 +6,7 @@ import React from 'react';
 
 function PeopleDetails() {
   const location = useLocation();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { person: initialPerson } = location.state || {}; // get the passed person object
 
   const [person, setPerson] = useState(initialPerson);
@@ -121,10 +121,10 @@ function PeopleDetails() {
   };
 
 
-  const handleReturnToPeople = () => {
-    // Go back to the list of people
-    navigate('/people');  
-  };
+  // const handleReturnToPeople = () => {
+  //   // Go back to the list of people
+  //   navigate('/people');  
+  // };
 
   const handleRefreshPage = () => {
     // Reload the page
@@ -193,9 +193,11 @@ function PeopleDetails() {
       </button>
 
       {/* Button to return to /people */}
-      <button className="btn btn-secondary" type="button" onClick={handleReturnToPeople} style={{ marginTop: '20px' }} >
-        Return to People List
-      </button>
+      <Link to="/people">
+        <button className="btn btn-secondary" type="button" style={{ marginTop: '20px' }} >
+          Return to People List
+        </button>
+      </Link>
       </div>
     </div>
   );

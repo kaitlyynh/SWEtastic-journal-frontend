@@ -29,7 +29,8 @@ function App() {
          <Route index element={<Login />} /> */}
         <Route path="people" element={<People />} />
         <Route path="people/:name" element={<PersonDetails />} />
-        <Route path="home" element={<Home />} />
+        <Route path='home' element={<Home />} />
+        <Route index element={<Home />} />
         <Route path="manuscripts" element={<Manuscript />} />
       </Routes>
     </BrowserRouter>

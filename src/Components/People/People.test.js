@@ -11,7 +11,7 @@ describe('People component', () => {
     await userEvent.click(screen.getByText('Add a Person'));
     await screen.findAllByRole('textbox');
 
-    expect(screen.getAllByRole('textbox')).toHaveLength(2);
+    expect(screen.getAllByRole('textbox')).toHaveLength(3);
 
   });
 });
