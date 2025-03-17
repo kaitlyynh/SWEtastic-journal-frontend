@@ -7,9 +7,9 @@ import React from 'react';
 function PeopleDetails() {
   const location = useLocation();
   // const navigate = useNavigate();
-  const { person: initialPerson } = location.state || {}; // get the passed person object
-
-  const [person, setPerson] = useState(initialPerson);
+  // const { person: initialPerson } = location.state || {}; // get the passed person object
+  const initialPerson = location?.state?.person || {}; 
+  const [person, setPerson] = useState(initialPerson || {});
   const [newName, setNewName] = useState(person?.name || '');
   const [newAffiliation, setNewAffiliation] = useState(person?.affiliation || '');
   const [newRole, setNewRole] = useState(person?.role || '')
@@ -138,7 +138,7 @@ function PeopleDetails() {
       <p><strong>Email:</strong> {person.email}</p>
       <p><strong>Current Name:</strong> {person.name}</p>
       <p><strong>Current Affiliation:</strong> {person.affiliation}</p>
-      <p><strong>Roles:</strong> {person.roles.join(', ')}</p>
+      <p><strong>Roles:</strong> {(person.roles || []).map(roleKey => roleOptions[roleKey] || roleKey).join(', ')}</p>
       <form>
         {/* Update Name */}
         <label className="form-label" htmlFor="name">Enter New Name</label>
