@@ -13,7 +13,7 @@ const mockPerson = {
   email: 'test@example.com',
   name: 'John Doe',
   affiliation: 'NYU',
-  roles: ['admin', 'editor'],
+  roles: ['AU', 'ED'],
 };
 
 const initialPerson = { email: 'test@example.com', name: 'Test User' };
@@ -27,15 +27,15 @@ const mockRoles = {
 describe('PeopleDetails Component', () => {
   beforeEach(() => {
     axios.get.mockImplementation((url) => {
-      if (url.includes('/roles')) {
-        return Promise.resolve({ data: mockRoles });
+    if (url.includes(`/people/${initialPerson.name}`)) {
+        return Promise.resolve({ data: initialPerson });
       }
       return Promise.resolve({ data: mockPerson });
     });
   });
 
 //   test('renders person details correctly', async () => {
-//     render(
+//     render( 
 //       <BrowserRouter>
 //         <PeopleDetails location={{ state: { person: initialPerson } }} />
 //       </BrowserRouter>

@@ -6,8 +6,8 @@ import './Navbar.css';
 const PAGES = [
   { label: 'Home', destination: '/home' },
   { label: 'View All People', destination: '/people' },
-  { label: 'View All Manuscripts', destination: '/manuscripts' },
-  { label: 'View All Submissions', destination: '/submissions' },
+  { label: 'Dashboard', destination: '/manuscripts' },
+  { label: 'Submissions', destination: '/submissions' },
 ];
 
 function NavLink({ page }) {
