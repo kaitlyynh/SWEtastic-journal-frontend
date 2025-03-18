@@ -103,7 +103,7 @@ function AddPersonForm({
     //   </div>
       
     // </form>
-    <form className="container p-3 border rounded bg-light">
+  <form className="container p-3 border rounded bg-light">
   <div className="mb-3">
     <label htmlFor="name" className="form-label">Name</label>
     <input required type="text" className="form-control" id="name" value={name} onChange={changeName} />
@@ -189,27 +189,30 @@ function Person({ person, fetchPeople, roleMap,}){
     //     Delete Person
     //   </button>
 
-  <div className="card my-3">
-  <div className="card-body">
-    <Link to={`/people/${name}`} state={{ person }} className="text-decoration-none text-dark">
-    <h5 className="card-title">{name}</h5>
-      <p className="card-text"><strong>Affiliation:</strong> {affiliation}</p>
-      <p className="card-text"><strong>Email:</strong> {email}</p>
+<div className="card my-3">
+  <div className="card-body d-flex">
+    <div className="me-3">
+      <Link to={`/people/${name}`} state={{ person }} className="text-decoration-none text-dark">
+        <h5 className="card-title">{name}</h5>
+        <p className="card-text"><strong>Affiliation:</strong> {affiliation}</p>
+        <p className="card-text"><strong>Email:</strong> {email}</p>
+      </Link>
+    </div>
+    <div className="ms-3">
       <p className="card-text"><strong>Roles:</strong></p>
       <ul className="list-group">
         {roles.map((role) => (
           <li key={role} className="list-group-item">{roleMap[role]}</li>
         ))}
       </ul>
-    </Link>
-    <button className="btn btn-danger mt-2" onClick={deletePerson}>
-      {/* <img src={trashIcon} alt="Delete" width="20" height="20" className="me-2" /> */}
-      <FaTrashAlt />
-      Delete Person
-    </button>
-    {error && <ErrorMessage message={error} />}
+      <button className="btn btn-danger mt-2" onClick={deletePerson}>
+        <FaTrashAlt />
+        Delete Person
+      </button>
     </div>
   </div>
+  {error && <ErrorMessage message={error} />}
+</div>
 
     
   );

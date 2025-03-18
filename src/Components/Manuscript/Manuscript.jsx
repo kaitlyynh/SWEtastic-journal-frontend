@@ -92,27 +92,34 @@ function Manuscript() {
                 </ul>
 
                 {/* Add Manuscript Form */}
-                <form onSubmit={addManuscript}>
-                    <input 
-                        type="text" 
-                        placeholder="Title" 
-                        value={title} 
-                        onChange={(e) => setTitle(e.target.value)} 
-                    />
-                    <input 
-                        type="text" 
-                        placeholder="Author" 
-                        value={author} 
-                        onChange={(e) => setAuthor(e.target.value)} 
-                    />
-                    <input 
-                        type="text" 
-                        placeholder="Referees" 
-                        value={referees} 
-                        onChange={(e) => setReferees(e.target.value)} 
-                    />
-                    <button type="submit">Add Manuscript</button>
-                </form>
+                <div className="card my-3">
+                    <div className="card-body d-flex mb-3">
+                        <form onSubmit={addManuscript}>
+                            <p className="card-text me-3"><strong>Title:</strong></p>
+                            <input 
+                                type="text" 
+                                placeholder="Title" 
+                                value={title} 
+                                onChange={(e) => setTitle(e.target.value)} 
+                            />
+                            <p className="card-text"><strong>Author:</strong></p>
+                            <input 
+                                type="text" 
+                                placeholder="Author" 
+                                value={author} 
+                                onChange={(e) => setAuthor(e.target.value)} 
+                            />
+                            <p className="card-text"><strong>Referees:</strong></p>
+                            <input 
+                                type="text" 
+                                placeholder="Referees" 
+                                value={referees} 
+                                onChange={(e) => setReferees(e.target.value)} 
+                            />
+                            <button className="btn btn-primary" type="submit">Add Manuscript</button>
+                        </form>
+                    </div>
+                </div>
             </header>
         </div>
     );
