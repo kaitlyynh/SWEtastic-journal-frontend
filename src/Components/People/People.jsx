@@ -155,7 +155,7 @@ ErrorMessage.propTypes = {
   message: propTypes.string.isRequired,
 };
 
-function Person({ person, fetchPeople,roleMap,}){
+function Person({ person, fetchPeople, roleMap,}){
   const [error, setError] = useState('');
   const { name, affiliation, email, roles } = person;
 
@@ -188,6 +188,7 @@ function Person({ person, fetchPeople,roleMap,}){
     //     <img src={trashIcon} alt="Delete Person" width="20" height="20"></img>
     //     Delete Person
     //   </button>
+
   <div className="card my-3">
   <div className="card-body">
     <Link to={`/people/${name}`} state={{ person }} className="text-decoration-none text-dark">
@@ -209,7 +210,7 @@ function Person({ person, fetchPeople,roleMap,}){
     {error && <ErrorMessage message={error} />}
     </div>
   </div>
-// </div> 
+
     
   );
 }
@@ -317,14 +318,15 @@ function People() {
   />
 
   {error && <ErrorMessage message={error} />}
-  
-  <div className="row">
-    {people.map((person) => (
-      <div key={person.email} className="col-md-6 col-lg-4">
-        <Person person={person} fetchPeople={fetchPeople} roleMap={roleMap} />
-      </div>
-    ))}
-  </div>
+  <table className="table table-striped">
+    <div className="">
+      {people.map((person) => (
+        <div key={person.email} className="col-md-6 col-lg-4">
+          <Person person={person} fetchPeople={fetchPeople} roleMap={roleMap} />
+        </div>
+      ))}
+    </div>
+  </table>
 </div>
 
   );
