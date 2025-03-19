@@ -1,4 +1,4 @@
-nav {
+/* nav {
     margin: 0px;
     padding-top: 0.5rem;
     background-color: var(--accent-color);
@@ -52,4 +52,53 @@ nav {
     background-color: var(--background-color);
     color: var(--accent-color);
     outline: none;
+  } */
+
+  .custom-navbar {
+    background: linear-gradient(135deg, #ff85a2, #ffbfd5);
+    padding: 1rem 2rem;
+    border-bottom: 3px solid #ff69b4;
+  }
+  
+  .brand-text {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #fff !important;
+  }
+  
+  .nav-link {
+    transition: color 0.3s ease-in-out, transform 0.2s ease-in-out, background-color 0.3s ease-in-out;
+    position: relative;
+    padding: 0.75rem 1.5rem;
+    border-radius: 20px;
+    font-weight: bold;
+    color: white !important;
+  }
+  
+  .nav-link:hover {
+    color: #8d0f4e !important;
+    transform: scale(1.1);
+    background-color: rgba(255, 105, 180, 0.2);
+  }
+  
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    bottom: 0;
+    left: 0;
+    background-color: #ff69b4;
+    transform: scaleX(0);
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .nav-link:hover::after {
+    transform: scaleX(1);
+  }
+  
+  .nav-link:focus {
+    outline: none;
+    box-shadow: 0 0 12px rgba(61, 7, 34, 0.7);
   }

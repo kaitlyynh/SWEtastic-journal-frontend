@@ -1,6 +1,7 @@
 import React from 'react';
 import propTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { Navbar, Nav } from 'react-bootstrap';
 import './Navbar.css';
 
 const PAGES = [
@@ -13,9 +14,9 @@ const PAGES = [
 function NavLink({ page }) {
   const { label, destination } = page;
   return (
-    <li>
-      <Link to={destination}>{label}</Link>
-    </li>
+    <Nav.Link as={Link} to={destination} className="nav-link">
+      {label}
+    </Nav.Link>
   );
 }
 NavLink.propTypes = {
@@ -25,14 +26,21 @@ NavLink.propTypes = {
   }).isRequired,
 };
 
-function Navbar() {
+function NavigationBar() {
   return (
-    <nav>
-      <ul className="wrapper">
-        {PAGES.map((page) => <NavLink key={page.destination} page={page} />)}
-      </ul>
-    </nav>
+    <Navbar bg="dark" variant="dark" expand="lg" className="custom-navbar">
+      <Navbar.Brand as={Link} to="/home">Ballroom Journal</Navbar.Brand>
+      <Navbar.Toggle aria-controls="basic-navbar-nav" />
+      <Navbar.Collapse id="basic-navbar-nav">
+        <Nav className="ml-auto">
+          {PAGES.map((page) => (
+            <NavLink key={page.destination} page={page} />
+          ))}
+        </Nav>
+      </Navbar.Collapse>
+    </Navbar>
   );
 }
 
-export default Navbar;
+export default NavigationBar;
+
