@@ -62,7 +62,7 @@ function Manuscript() {
         event.preventDefault();
         axios
             .get(`${ManuscriptSearchEP}?query=${searchQuery}`)
-            .then(({ data }) => setManuscripts(data))
+            .then(({ data }) => setManuscripts(peopleObjectToArray(data)))
             .catch((error) => setError(`Error searching manuscripts: ${error.message}`));
     };
 
@@ -84,9 +84,13 @@ function Manuscript() {
                     <button type="submit">Search</button>
                 </form>
 
-                {/* Display Manuscripts */}
+                {/* Display Manuscripts, should title be case sensitive? */}
                 <ul>
-                    {manuscripts.map((manuscript, index) => (
+                    {manuscripts
+                    .filter((manuscript) => 
+                        searchQuery === "" || manuscript.title.includes(searchQuery)
+                    )
+                    .map((manuscript, index) => (
                         <li key={index}>{manuscript.title} by {manuscript.author}</li>
                     ))}
                 </ul>
