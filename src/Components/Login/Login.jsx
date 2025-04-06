@@ -19,7 +19,7 @@ function Login() {
 
       if (res.status === 200) {
         localStorage.setItem("loggedIn", "true");
-        // localStorage.setItem("username", res.data.name);
+        localStorage.setItem("username", res.data.name);
         setMessage(res.data.message);
 
       setTimeout(() => {
