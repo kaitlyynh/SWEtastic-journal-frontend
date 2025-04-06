@@ -24,10 +24,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 // }
 
 function App() {
-  const isLoggedIn = localStorage.getItem("loggedIn") === "true";
   return (
     <BrowserRouter>
-      {isLoggedIn && <Navbar />}
+      <Navbar />
       <Routes>
         {/* public */}
         <Route path="registration" element={<Registration />} />
