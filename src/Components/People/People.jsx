@@ -274,65 +274,136 @@ function People() {
   useEffect(getRoles,[]);
 
 
-  return (
-//     <div className="wrapper">
-//       <header>
-//         <h1>
-//           View All People
-//         </h1>
-//         <button type="button" onClick={showAddPersonForm}>
-//           <img src={addUserIcon} alt="Add a Person" height="25" width="25"></img>
-//           Add a Person
-//         </button>
-//       </header>
-//       <AddPersonForm
-//         visible={addingPerson}
-//         cancel={hideAddPersonForm}
-//         fetchPeople={fetchPeople}
-//         setError={setError}
-//         roleOptions={roleMap}
-//       />
-//       {error && <ErrorMessage message={error} />}
-//       {people.map((person) => (
-//         <Person
-//           key={person.email}
-//           person={person}
-//           fetchPeople={fetchPeople}
-//           roleMap={roleMap}
+//   return (
+    
+// //     <div className="wrapper">
+// //       <header>
+// //         <h1>
+// //           View All People
+// //         </h1>
+// //         <button type="button" onClick={showAddPersonForm}>
+// //           <img src={addUserIcon} alt="Add a Person" height="25" width="25"></img>
+// //           Add a Person
+// //         </button>
+// //       </header>
+// //       <AddPersonForm
+// //         visible={addingPerson}
+// //         cancel={hideAddPersonForm}
+// //         fetchPeople={fetchPeople}
+// //         setError={setError}
+// //         roleOptions={roleMap}
+// //       />
+// //       {error && <ErrorMessage message={error} />}
+// //       {people.map((person) => (
+// //         <Person
+// //           key={person.email}
+// //           person={person}
+// //           fetchPeople={fetchPeople}
+// //           roleMap={roleMap}
+// //   />
+// // ))}
+// //     </div>
+// <div className="container mt-4">
+//   <header className="d-flex justify-content-between align-items-center mb-3">
+//     <h1 className="h3">View All People</h1>
+//     <button className="btn btn-success d-flex align-items-center" onClick={showAddPersonForm}>
+//       {/* <img src={addUserIcon} alt="Add" width="25" height="25" className="me-2" /> */}
+//       <IoMdPersonAdd />
+//       Add a Person
+//     </button>
+//   </header>
+
+//   <AddPersonForm
+//     visible={addingPerson}
+//     cancel={hideAddPersonForm}
+//     fetchPeople={fetchPeople}
+//     setError={setError}
+//     roleOptions={roleMap}
 //   />
-// ))}
+
+//   {error && <ErrorMessage message={error} />}
+//   <table className="table table-striped">
+//     <div className="">
+//       {people.map((person) => (
+//         <div key={person.email} className="col-md-6 col-lg-4">
+//           <Person person={person} fetchPeople={fetchPeople} roleMap={roleMap} />
+//         </div>
+//       ))}
 //     </div>
-<div className="container mt-4">
-  <header className="d-flex justify-content-between align-items-center mb-3">
-    <h1 className="h3">View All People</h1>
-    <button className="btn btn-success d-flex align-items-center" onClick={showAddPersonForm}>
-      {/* <img src={addUserIcon} alt="Add" width="25" height="25" className="me-2" /> */}
-      <IoMdPersonAdd />
-      Add a Person
-    </button>
-  </header>
+//   </table>
+// </div>
 
-  <AddPersonForm
-    visible={addingPerson}
-    cancel={hideAddPersonForm}
-    fetchPeople={fetchPeople}
-    setError={setError}
-    roleOptions={roleMap}
-  />
+//   );
+// }
 
-  {error && <ErrorMessage message={error} />}
-  <table className="table table-striped">
-    <div className="">
-      {people.map((person) => (
-        <div key={person.email} className="col-md-6 col-lg-4">
-          <Person person={person} fetchPeople={fetchPeople} roleMap={roleMap} />
-        </div>
-      ))}
+return (
+  <div className="container mt-4">
+    <header className="d-flex justify-content-between align-items-center mb-4">
+      <h1 className="h4">People Catalog</h1>
+      <button className="btn btn-success d-flex align-items-center" onClick={showAddPersonForm}>
+        <IoMdPersonAdd className="me-2" />
+        Add a Person
+      </button>
+    </header>
+
+    <AddPersonForm
+      visible={addingPerson}
+      cancel={hideAddPersonForm}
+      fetchPeople={fetchPeople}
+      setError={setError}
+      roleOptions={roleMap}
+    />
+
+    {error && <ErrorMessage message={error} />}
+
+    <div className="table-responsive">
+      <table className="table table-bordered table-hover align-middle">
+        <thead className="table-light">
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Affiliation</th>
+            <th>Roles</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {people.map((person) => (
+            <tr key={person.email}>
+              <td>
+                <Link to={`/people/${person.name}`} state={{ person }} className="text-decoration-none">
+                  {person.name}
+                </Link>
+              </td>
+              <td>{person.email}</td>
+              <td>{person.affiliation}</td>
+              <td>{person.roles.map((role) => roleMap[role]).join(', ')}</td>
+              <td>
+                <button
+                  className="btn btn-sm btn-danger"
+                  onClick={() => {
+                    axios
+                      .delete(`${PEOPLE_READ_ENDPOINT}/${person.email}`)
+                      .then(fetchPeople)
+                      .catch((error) => {
+                        if (error.response?.data?.message) {
+                          setError(`Error: ${error.response.data.message}`);
+                        } else {
+                          setError(`There was an unexpected error deleting the person. ${error}`);
+                        }
+                      });
+                  }}
+                >
+                  <FaTrashAlt />
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
-  </table>
-</div>
-
-  );
+  </div>
+);
 }
 
 export default People;
