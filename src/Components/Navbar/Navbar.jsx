@@ -10,6 +10,7 @@ const PAGES = [
   { label: 'Dashboard', destination: '/manuscripts' },
   { label: 'Submissions', destination: '/submissions' },
   { label: 'Register', destination: '/registration' },
+  { label: 'Login', destination: '/login' },
 ];
 
 function NavLink({ page }) {

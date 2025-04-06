@@ -7,8 +7,9 @@ function Login() {
   const [form, setForm] = useState({email: '', password: '' });
   const [message, setMessage] = useState('');
   const navigate= useNavigate();
+//   const username = localStorage.getItem("username");
 
-  const handleChange = (e) => setForm({ ...form, [e.target.email]: e.target.value });
+  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,13 +17,19 @@ function Login() {
       const res = await axios.post(`${BACKEND_URL}/login`, form);
       setMessage(res.data.message);
 
+      if (res.status === 200) {
+        localStorage.setItem("loggedIn", "true");
+        // localStorage.setItem("username", res.data.name);
+        setMessage(res.data.message);
+
       setTimeout(() => {
         navigate('/'); // home page
       }, 1000);
-
+     }
     } catch (err) {
       setMessage(err.response?.data?.message || 'Error registering');
     }
+    localStorage.setItem("loggedIn", "true");
   };
   
 
@@ -38,4 +45,4 @@ function Login() {
 }
 
 
-export default Registeration;
+export default Login;

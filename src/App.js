@@ -14,6 +14,7 @@ import Home from './Components/Home';
 import PersonDetails from './Components/PeopleDetails/PeopleDetails';
 import Manuscript from './Components/Manuscript/Manuscript';
 import Registration from './Components/Registration/Registration';
+import Login from './Components/Login/Login';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 // function PersonPage() {
@@ -34,6 +35,7 @@ function App() {
         <Route index element={<Home />} />
         <Route path="manuscripts" element={<Manuscript />} />
         <Route path="registration" element={<Registration />} />
+        <Route path="login" element={<Login />} />
       </Routes>
     </BrowserRouter>
   );
