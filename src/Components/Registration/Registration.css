@@ -1,0 +1,83 @@
+.registration-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 85vh;
+    background: linear-gradient(to right, #fae0f1, #ffffff);
+    padding: 20px;
+  }
+  
+  .registration-card {
+    background-color: white;
+    padding: 40px 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+  }
+  
+  .registration-title {
+    margin-bottom: 10px;
+    font-size: 28px;
+    font-weight: 700;
+    color: #333;
+  }
+  
+  .registration-description {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+  }
+  
+  .registration-form input {
+    width: 100%;
+    padding: 12px 14px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: border-color 0.3s ease;
+  }
+  
+  .registration-form input:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+  
+  .registration-form button {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    border: none;
+    color: white;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .registration-form button:hover {
+    background-color: #0056b3;
+  }
+  
+  .registration-message {
+    margin-top: 10px;
+    color: #d9534f;
+  }
+  
+  .registration-login-link {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #444;
+  }
+  .registration-login-link a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .registration-login-link a:hover {
+    text-decoration: underline;
+  }
+  
