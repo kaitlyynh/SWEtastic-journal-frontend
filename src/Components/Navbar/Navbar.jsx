@@ -5,40 +5,6 @@ import './Navbar.css';
 import { Link, useNavigate } from 'react-router-dom';
 
 
-// const isLoggedIn = localStorage.getItem("loggedIn") === "true";
-
-
-// const PAGES = [
-//   { label: 'Home', destination: '/home' },
-//   { label: 'View All People', destination: '/people' },
-//   { label: 'Dashboard', destination: '/manuscripts' },
-//   { label: 'Submissions', destination: '/submissions' },
-//   { label: 'Register', destination: '/registration' },
-//   { label: 'Login', destination: '/login' },
-// ];
-
-
-// const navigate = useNavigate();
-
-// const handleLogout = () => {
-//   localStorage.removeItem("loggedIn");
-//   localStorage.removeItem("username");
-//   navigate("/login");
-// };
-
-// const PAGES = isLoggedIn
-//   ? [
-//       { label: 'Home', destination: '/home' },
-//       { label: 'View All People', destination: '/people' },
-//       { label: 'Dashboard', destination: '/manuscripts' },
-//       { label: 'Logout', onClick: handleLogout }
-//     ]
-//   : [
-//       { label: 'Home', destination: '/home' },
-//       { label: 'Register', destination: '/registration' },
-//       { label: 'Login', destination: '/login' }
-//     ];
-
 function NavLink({ page }) {
   const { label, destination } = page;
   return (
@@ -69,6 +35,7 @@ function NavigationBar() {
     ? [
         { label: 'Home', destination: '/home' },
         { label: 'View All People', destination: '/people' },
+        { label: 'Masthead', destination: '/masthead'},
         { label: 'Dashboard', destination: '/manuscripts' },
         { label: 'Logout', onClick: handleLogout }
       ]

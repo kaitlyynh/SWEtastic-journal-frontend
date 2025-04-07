@@ -25,20 +25,6 @@ function Home(){
         .catch((error) => setError(`There was a problem retrieving the journal title. ${error.message}`));
     };
     useEffect(fetchTitle, []);
-//   return (
-//     <div className="wrapper">
-//             <header> 
-//                 {error && (
-//                     <p className="error">{error}</p>
-//                 )}  
-//                 {/*In case network call doesn't work "Journal" is displayed*/}
-//                 <h2 className="journal-title">{title || "Journal"}</h2>
-//             </header>
-//         </div>
-//     );
-// }
-// export default Home
-
 
     return (
         <motion.div

@@ -16,6 +16,7 @@ import Manuscript from './Components/Manuscript/Manuscript';
 import Registration from './Components/Registration/Registration';
 import Login from './Components/Login/Login';
 import ProtectedRoute from './Components/ProtectedRoute/ProtectedRoute';
+import Masthead from "./Components/Masthead/Masthead";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 // function PersonPage() {
@@ -40,6 +41,14 @@ function App() {
           element={
             <ProtectedRoute>
               <People />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="masthead"
+          element={
+            <ProtectedRoute>
+              <Masthead />
             </ProtectedRoute>
           }
         />
