@@ -24,7 +24,7 @@ function Manuscript() {
     const fetchManuscripts = () => {
         axios.get(ManuscriptEP)
             .then(({ data }) => {
-                setManuscripts(peopleObjectToArray(data));
+                setManuscripts(peopleObjectToArray(data)); /* Store all manuscripts */
             })
             .catch((error) => setError(`There was a problem retrieving manuscripts. ${error.message}`));
     };
@@ -62,7 +62,10 @@ function Manuscript() {
         event.preventDefault();
         axios
             .get(`${ManuscriptSearchEP}?query=${searchQuery}`)
-            .then(({ data }) => setManuscripts(peopleObjectToArray(data)))
+            .then(({ data }) => {
+                setManuscripts(peopleObjectToArray(data));
+            }
+            )
             .catch((error) => setError(`Error searching manuscripts: ${error.message}`));
     };
 

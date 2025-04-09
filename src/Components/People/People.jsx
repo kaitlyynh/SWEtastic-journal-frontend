@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
  
 import { BACKEND_URL } from '../../constants';
-import { FaTrashAlt } from "react-icons/fa";
+import { FaTrashAlt, FaEdit } from "react-icons/fa";
 import { IoMdPersonAdd } from "react-icons/io";
 
 
@@ -173,21 +173,6 @@ function Person({ person, fetchPeople, roleMap,}){
     };
 
   return (
-    // <div>
-    //   <Link to={`/people/${name}`} state={{ person }}>
-    //     <div className="person-container">
-    //       <h2>{name}</h2>
-    //       <p>Affiliation: {affiliation}</p>
-    //       <p>Email: {email}</p>
-    //       <p>
-    //       Roles: {roles.map((role) => (<li key={role}>{ roleMap[role] }</li>))}
-    //       </p>
-    //     </div>
-    //   </Link>
-    //   <button onClick={deletePerson} style={{ marginLeft: '10px', color: 'red' }}>
-    //     <img src={trashIcon} alt="Delete Person" width="20" height="20"></img>
-    //     Delete Person
-    //   </button>
 
 <div className="card my-3">
   <div className="card-body d-flex">
@@ -371,14 +356,17 @@ return (
           {people.map((person) => (
             <tr key={person.email}>
               <td>
-                <Link to={`/people/${person.name}`} state={{ person }} className="text-decoration-none">
-                  {person.name}
-                </Link>
+                {person.name}
               </td>
               <td>{person.email}</td>
               <td>{person.affiliation}</td>
               <td>{person.roles.map((role) => roleMap[role]).join(', ')}</td>
               <td>
+                <button className="btn btn-sm btn-success">
+                  <Link to={`/people/${person.name}`} state={{ person }}>
+                    <FaEdit color="white"/>
+                  </Link>
+                </button>
                 <button
                   className="btn btn-sm btn-danger"
                   onClick={() => {
