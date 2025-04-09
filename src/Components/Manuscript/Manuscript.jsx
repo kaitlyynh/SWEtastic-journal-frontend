@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 import { BACKEND_URL } from '../../constants';
@@ -94,7 +95,13 @@ function Manuscript() {
                         searchQuery === "" || manuscript.title.includes(searchQuery)
                     )
                     .map((manuscript, index) => (
-                        <li key={index}>{manuscript.title} by {manuscript.author}</li>
+                        <li key={index}>
+                        <Link to={`/manuscripts/${manuscript.title}`} state={{ manuscript }}>
+                            {manuscript.title}
+                        </Link>
+                        {" "}
+                        by {manuscript.author}
+                    </li>
                     ))}
                 </ul>
 

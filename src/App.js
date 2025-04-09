@@ -17,6 +17,7 @@ import Registration from './Components/Registration/Registration';
 import Login from './Components/Login/Login';
 import ProtectedRoute from './Components/ProtectedRoute/ProtectedRoute';
 import Masthead from "./Components/Masthead/Masthead";
+import ManuscriptDetails from './Components/ManuscriptDetails/ManuscriptDetails';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 // function PersonPage() {
@@ -68,6 +69,16 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/manuscripts/:title" 
+          element={
+          <ProtectedRoute>
+            {<ManuscriptDetails />}
+          </ProtectedRoute>
+          }
+        >
+
+        </Route>
       </Routes>
     </BrowserRouter>
   );
