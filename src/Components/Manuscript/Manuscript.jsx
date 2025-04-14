@@ -91,7 +91,7 @@ function Manuscript() {
                 {/* Display Manuscripts, should title be case sensitive? */}
                 <ul>
                     {manuscripts
-                    .filter((manuscript) => 
+                    .filter((manuscript) => manuscript && manuscript.title &&
                         searchQuery === "" || manuscript.title.includes(searchQuery)
                     )
                     .map((manuscript, index) => (
