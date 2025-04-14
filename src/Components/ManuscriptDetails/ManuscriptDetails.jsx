@@ -31,7 +31,7 @@ function ManuscriptDetails() {
       })
       .catch((err) => setError(`Error fetching manuscript details: ${err.message}`));
   }, [initialManuscript?.title]);
-
+  
   const handleWithdraw = () => {
     axios.put(`${BACKEND_URL}/manuscripts/${manuscript.title}/update/WIT`)
       .then(() => {
@@ -42,6 +42,18 @@ function ManuscriptDetails() {
         setError(`Failed to withdraw manuscript: ${err.message}`);
       });
   };
+
+  const handleDelete = () => {
+    axios.delete(`${BACKEND_URL}/manuscripts/${encodeURIComponent(manuscript.title)}/delete`)
+      .then(() => {
+        alert("Successfully deleted manuscript");
+      })
+      .catch(err => {
+        console.log(err);
+        setError(`Failed to delete manuscript: ${err.message}`);
+      });
+  };
+  
 
   return (
     <div className="container mt-4 card shadow-sm p-4">
@@ -68,6 +80,13 @@ function ManuscriptDetails() {
                 This manuscript has been withdrawn.
                 </p>
             )}
+        </form>
+        <form>
+            <button
+                className="btn btn-sm btn-danger"
+                onClick={handleDelete}
+            > Delete
+            </button>
         </form>
     </div>
   );
