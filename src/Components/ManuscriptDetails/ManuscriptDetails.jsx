@@ -1,4 +1,4 @@
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { BACKEND_URL } from '../../constants';
@@ -46,7 +46,7 @@ function ManuscriptDetails() {
   const handleDelete = () => {
     axios.delete(`${BACKEND_URL}/manuscripts/${encodeURIComponent(manuscript.title)}/delete`)
       .then(() => {
-        alert("Successfully deleted manuscript");
+        alert("Successfully deleted manuscript"); 
       })
       .catch(err => {
         console.log(err);
@@ -82,11 +82,13 @@ function ManuscriptDetails() {
             )}
         </form>
         <form>
+          <Link to="/manuscripts">
             <button
                 className="btn btn-sm btn-danger"
                 onClick={handleDelete}
             > Delete
             </button>
+          </Link>
         </form>
     </div>
   );
