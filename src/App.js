@@ -20,11 +20,6 @@ import Masthead from "./Components/Masthead/Masthead";
 import ManuscriptDetails from './Components/ManuscriptDetails/ManuscriptDetails';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-// function PersonPage() {
-//   const { name } = useParams();
-//   return <h1>{name}</h1>
-// }
-
 function App() {
   return (
     <BrowserRouter>
@@ -83,22 +78,5 @@ function App() {
     </BrowserRouter>
   );
 }
-//   return (
-//     <BrowserRouter>
-//       <Navbar />
-//       <Routes>
-//         {/* For a different home page, do:
-//          <Route index element={<Login />} /> */}
-//         <Route path="people" element={<People />} />
-//         <Route path="people/:name" element={<PersonDetails />} />
-//         <Route path='home' element={<Home />} />
-//         <Route index element={<Home />} />
-//         <Route path="manuscripts" element={<Manuscript />} />
-//         <Route path="registration" element={<Registration />} />
-//         <Route path="login" element={<Login />} />
-//       </Routes>
-//     </BrowserRouter>
-//   );
-// }
 
 export default App;

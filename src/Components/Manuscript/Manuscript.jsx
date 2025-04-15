@@ -16,6 +16,7 @@ function peopleObjectToArray(Data) {
 
 function Manuscript() {
     const [error, setError] = useState('');
+    const [info, setInfo] = useState('');
     const [manuscripts, setManuscripts] = useState([]);
     const [title, setTitle] = useState('');
     const [author, setAuthor] = useState('');
@@ -25,7 +26,11 @@ function Manuscript() {
     const fetchManuscripts = () => {
         axios.get(ManuscriptEP)
             .then(({ data }) => {
-                setManuscripts(peopleObjectToArray(data)); /* Store all manuscripts */
+                const manuscriptsArray = peopleObjectToArray(data);
+                setManuscripts(manuscriptsArray);
+                if (manuscriptsArray.length === 0) {
+                    setInfo("No manuscripts found.");
+                  }
             })
             .catch((error) => setError(`There was a problem retrieving manuscripts. ${error.message}`));
     };
@@ -90,6 +95,7 @@ function Manuscript() {
 
                 {/* Display Manuscripts, should title be case sensitive? */}
                 <ul>
+                    {info}
                     {manuscripts
                     .filter((manuscript) => manuscript && manuscript.title &&
                         searchQuery === "" || manuscript.title.includes(searchQuery)
@@ -107,6 +113,7 @@ function Manuscript() {
 
                 {/* Add Manuscript Form */}
                 <div className="card my-3">
+                    <h5><strong>Submit a Manuscript</strong></h5>
                     <div className="card-body d-flex mb-3">
                         <form onSubmit={addManuscript}>
                             <p className="card-text me-3"><strong>Title:</strong></p>

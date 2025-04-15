@@ -1,26 +1,36 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import userEvent from '@testing-library/user-event'
-
 import App from './App';
 
-describe('App', () => {
-  it('renders nav and home', async () => {
-    render(<App />);
+beforeEach(() => {
+  localStorage.clear(); // Clear local storage before each test
+});
 
-    await screen.findByRole('heading');
-    await screen.findAllByRole('listitem');
+test('renders login form when not authenticated', () => {
+  // simulate visiting the /login route
+  window.history.pushState({}, 'Login Page', '/login');
 
-    expect(screen.getByRole('heading')).toBeInTheDocument();
-    expect(screen.getAllByRole('listitem')).toHaveLength(4);
-  });
+  render(<App />);
 
-  it('switches to People view', async () => {
-    render(<App />);
+  // Check if email, password fields and login button are rendered
+  expect(screen.getByPlaceholderText(/email/i)).toBeInTheDocument();
+  expect(screen.getByPlaceholderText(/password/i)).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: /login/i })).toBeInTheDocument();
+});
 
-    userEvent.click(screen.getByText('View All People'));
+test('renders home page when authenticated', () => {
+  // Mock authentication by setting localStorage item
+  localStorage.setItem('loggedIn', 'true');
 
-    expect(screen.getByRole('heading'))
-      .toHaveTextContent('View All People')
-  });
+  // simulate visiting the /home route
+  window.history.pushState({}, 'Home Page', '/home');
+
+  render(<App />);
+
+  // Check if navigation items appear
+  expect(screen.getByRole('link', { name: /home/i })).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: /people/i })).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: /masthead/i })).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: /dashboard/i })).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: /logout/i })).toBeInTheDocument();
 });
