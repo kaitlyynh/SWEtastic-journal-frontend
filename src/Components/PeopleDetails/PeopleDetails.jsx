@@ -120,12 +120,7 @@ function PeopleDetails() {
       });
   };
 
-
-  // const handleReturnToPeople = () => {
-  //   // Go back to the list of people
-  //   navigate('/people');  
-  // };
-
+  
   const handleRefreshPage = () => {
     // Reload the page
     window.location.reload();  

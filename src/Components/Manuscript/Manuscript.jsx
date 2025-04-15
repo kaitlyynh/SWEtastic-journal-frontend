@@ -8,6 +8,7 @@ const ManuscriptEP = `${BACKEND_URL}/manuscripts`;
 const ManuscriptSearchEP = `${BACKEND_URL}/manuscripts/search`;
 const Manuscript_Create_EP = `${BACKEND_URL}/manuscripts/create`;
 
+
 function peopleObjectToArray(Data) {
     const keys = Object.keys(Data);
     const people = keys.map((key) => Data[key]);
@@ -20,7 +21,9 @@ function Manuscript() {
     const [manuscripts, setManuscripts] = useState([]);
     const [title, setTitle] = useState('');
     const [author, setAuthor] = useState('');
-    const [referees, setReferees] = useState('');
+    const [email, setEmail] = useState('');
+    const [abstract, setAbstract] = useState('');
+    const [text, setText] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
 
     const fetchManuscripts = () => {
@@ -40,7 +43,9 @@ function Manuscript() {
         const newManuscript = {
             title,
             author,
-            referees
+            email,
+            abstract,
+            text,
         };
 
         axios.put(Manuscript_Create_EP, newManuscript, {
@@ -53,7 +58,10 @@ function Manuscript() {
             fetchManuscripts();
             setTitle(''); 
             setAuthor('');
-            setReferees('');
+            setEmail('');
+            setAbstract('');
+            setText('');
+            window.location.reload()
         })
         .catch((error) => {
             if (error.response && error.response.data && error.response.data.message) {
@@ -130,12 +138,26 @@ function Manuscript() {
                                 value={author} 
                                 onChange={(e) => setAuthor(e.target.value)} 
                             />
-                            <p className="card-text"><strong>Referees:</strong></p>
+                            <p className="card-text"><strong>Author Email:</strong></p>
                             <input 
                                 type="text" 
-                                placeholder="Referees" 
-                                value={referees} 
-                                onChange={(e) => setReferees(e.target.value)} 
+                                placeholder="Email" 
+                                value={email} 
+                                onChange={(e) => setEmail(e.target.value)} 
+                            />
+                            <p className="card-text"><strong>Abstract:</strong></p>
+                            <input 
+                                type="text" 
+                                placeholder="Abstarct" 
+                                value={abstract} 
+                                onChange={(e) => setAbstract(e.target.value)} 
+                            />
+                            <p className="card-text"><strong>Text:</strong></p>
+                            <input 
+                                type="text" 
+                                placeholder="Text" 
+                                value={text} 
+                                onChange={(e) => setText(e.target.value)} 
                             />
                             <button className="btn btn-primary" type="submit">Add Manuscript</button>
                         </form>
