@@ -31,6 +31,6 @@ test('renders home page when authenticated', () => {
   expect(screen.getByRole('link', { name: /home/i })).toBeInTheDocument();
   expect(screen.getByRole('link', { name: /people/i })).toBeInTheDocument();
   expect(screen.getByRole('link', { name: /masthead/i })).toBeInTheDocument();
-  expect(screen.getByRole('link', { name: /dashboard/i })).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: /submissions/i })).toBeInTheDocument();
   expect(screen.getByRole('button', { name: /logout/i })).toBeInTheDocument();
 });

@@ -36,7 +36,7 @@ function NavigationBar() {
         { label: 'Home', destination: '/home' },
         { label: 'View All People', destination: '/people' },
         { label: 'Masthead', destination: '/masthead'},
-        { label: 'Dashboard', destination: '/manuscripts' },
+        { label: 'Submissions', destination: '/manuscripts' },
         { label: 'Logout', onClick: handleLogout }
       ]
     : [
