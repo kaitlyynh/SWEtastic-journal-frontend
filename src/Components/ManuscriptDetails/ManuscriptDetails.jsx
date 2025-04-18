@@ -46,18 +46,52 @@ function ManuscriptDetails() {
       });
   }, [initialManuscript?.title]);
 
+  const refreshManuscriptData = () => {
+    axios.get(`${BACKEND_URL}/manuscripts/${encodeURIComponent(manuscript.title)}`)
+      .then((response) => {
+        const data = response.data;
+        setManuscript(data);
+        setAssignedReferees(data.referees || []);
+      })
+      .catch(err => setError(`Failed to refresh manuscript data: ${err.message}`));
+  };
+  
   // Function to handle adding a referee to the assigned list
-  const handleAddReferee = (email) => {
-    if (!assignedReferees.includes(email)) {
-      setAssignedReferees([...assignedReferees, email]);
-    }
-  };
+//   const handleAddReferee = (email) => {
+//     if (!assignedReferees.includes(email)) {
+//       setAssignedReferees([...assignedReferees, email]);
+//       console.log(assignedReferees);
+//     }
+//   };
+  // handleAddReferee using new endpoint
+const handleAddReferee = (email) => {
+  if (!assignedReferees.includes(email)) {
+    axios.put(`${BACKEND_URL}/manuscripts/${encodeURIComponent(manuscript.title)}/add_referee`, {
+      referee: email
+    })
+    .then((response) => {
+      refreshManuscriptData(); // re-sync with backend
+      console.log(response.data.manuscript)
+    })
+    .catch((err) => {
+      setError(`Failed to add referee: ${err.message}`);
+    });
+  }
+};
 
-  // Function to remove a referee from the assigned list
+  // Function to delete a referee from the assigned list
   const handleRemoveReferee = (email) => {
-    setAssignedReferees(assignedReferees.filter((referee) => referee !== email));
-    window.location.reload();
+    axios.put(`${BACKEND_URL}/manuscripts/${encodeURIComponent(manuscript.title)}/delete_referee`, {
+      referee: email
+    })
+    .then(() => {
+      refreshManuscriptData(); // refresh to show updated list from backend
+    })
+    .catch((err) => {
+      setError(`Failed to delete referee: ${err.message}`);
+    });
   };
+  
 
   const handleWithdraw = () => {
     axios.put(`${BACKEND_URL}/manuscripts/${manuscript.title}/update/WIT`)
