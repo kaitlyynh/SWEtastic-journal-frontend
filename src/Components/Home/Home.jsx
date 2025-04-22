@@ -3,6 +3,12 @@ import axios from 'axios';
 import './Home.css';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { motion } from 'framer-motion';
+import image1 from './assets/standardTango.JPG';
+import image2 from './assets/NYUteam.jpg';
+import image3 from './assets/rhythm.png';
+// import image4 from './assets/latin.png';
+
+
 
 // import propTypes from 'prop-types';
 // import { Link } from 'react-router-dom';
@@ -55,17 +61,17 @@ function Home(){
                 <Row>
                     <Col md={4}>
                         <motion.div whileHover={{ scale: 1.05 }}>
-                            <div className="image-placeholder">Image 1</div>
+                            <img src={image1} alt="Gallery Image 1" className="gallery-image" />
                         </motion.div>
                     </Col>
                     <Col md={4}>
                         <motion.div whileHover={{ scale: 1.05 }}>
-                            <div className="image-placeholder">Image 2</div>
+                            <img src={image2} alt="Gallery Image 2" className="gallery-image" />
                         </motion.div>
                     </Col>
                     <Col md={4}>
                         <motion.div whileHover={{ scale: 1.05 }}>
-                            <div className="image-placeholder">Image 3</div>
+                            <img src={image3} alt="Gallery Image 3" className="gallery-image" />
                         </motion.div>
                     </Col>
                 </Row>

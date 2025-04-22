@@ -16,9 +16,15 @@ function ManuscriptDetails() {
   const [assignedReferees, setAssignedReferees] = useState({});
   const [error, setError] = useState('');
   const [isWithdrawn, setWithdrawn] = useState(false);
+  const [state, setState] = useState({})
+  const [validActions, setValidActions] = useState([]);
+
 
   const ManuscriptEP = `${BACKEND_URL}/manuscripts/${manuscript.title}`;
   const RefEP = `${BACKEND_URL}/roles/RE`;
+  const ActionsEP = `${BACKEND_URL}/manuscripts/ValidActions`;
+  const StatesEP = `${BACKEND_URL}/manuscripts/ValidStates`;
+
   // const PERSON_EP = `${BACKEND_URL}/people/${initialPerson.email}`
 
 
@@ -36,15 +42,35 @@ function ManuscriptDetails() {
       })
       .catch((err) => setError(`Error fetching manuscript details: ${err.message}`));
 
-    axios.get(RefEP) 
+    axios.get(RefEP)
       .then((response) => {
-        console.log("Referees emails:", response.data); 
-        setRefereeList(response.data); 
+        console.log("Referees emails:", response.data);
+        setRefereeList(response.data);
       })
       .catch((err) => {
         setError(`Error fetching referees: ${err.message}`);
       });
+
+    axios
+      .get(StatesEP)
+      .then(({ data }) => {
+        setState(data);
+      })
+      .catch((err) => {
+        setError(`Error fetching roles: ${err.message}`);
+      });
+
+    axios
+      .get(ActionsEP)
+      .then(({ data }) => {
+        setValidActions(data);
+      })
+      .catch((err) => {
+        setError(`Error fetching actions: ${err.message}`);
+      });
+
   }, [initialManuscript?.title]);
+
 
   const refreshManuscriptData = () => {
     axios.get(`${BACKEND_URL}/manuscripts/${encodeURIComponent(manuscript.title)}`)
@@ -55,43 +81,43 @@ function ManuscriptDetails() {
       })
       .catch(err => setError(`Failed to refresh manuscript data: ${err.message}`));
   };
-  
+
   // Function to handle adding a referee to the assigned list
-//   const handleAddReferee = (email) => {
-//     if (!assignedReferees.includes(email)) {
-//       setAssignedReferees([...assignedReferees, email]);
-//       console.log(assignedReferees);
-//     }
-//   };
+  //   const handleAddReferee = (email) => {
+  //     if (!assignedReferees.includes(email)) {
+  //       setAssignedReferees([...assignedReferees, email]);
+  //       console.log(assignedReferees);
+  //     }
+  //   };
   // handleAddReferee using new endpoint
-const handleAddReferee = (email) => {
-  if (!assignedReferees.includes(email)) {
-    axios.put(`${BACKEND_URL}/manuscripts/${encodeURIComponent(manuscript.title)}/add_referee`, {
-      referee: email
-    })
-    .then((response) => {
-      refreshManuscriptData(); // re-sync with backend
-      console.log(response.data.manuscript)
-    })
-    .catch((err) => {
-      setError(`Failed to add referee: ${err.message}`);
-    });
-  }
-};
+  const handleAddReferee = (email) => {
+    if (!assignedReferees.includes(email)) {
+      axios.put(`${BACKEND_URL}/manuscripts/${encodeURIComponent(manuscript.title)}/add_referee`, {
+        referee: email
+      })
+        .then((response) => {
+          refreshManuscriptData(); // re-sync with backend
+          console.log(response.data.manuscript)
+        })
+        .catch((err) => {
+          setError(`Failed to add referee: ${err.message}`);
+        });
+    }
+  };
 
   // Function to delete a referee from the assigned list
   const handleRemoveReferee = (email) => {
     axios.put(`${BACKEND_URL}/manuscripts/${encodeURIComponent(manuscript.title)}/delete_referee`, {
       referee: email
     })
-    .then(() => {
-      refreshManuscriptData(); // refresh to show updated list from backend
-    })
-    .catch((err) => {
-      setError(`Failed to delete referee: ${err.message}`);
-    });
+      .then(() => {
+        refreshManuscriptData(); // refresh to show updated list from backend
+      })
+      .catch((err) => {
+        setError(`Failed to delete referee: ${err.message}`);
+      });
   };
-  
+
 
   const handleWithdraw = () => {
     axios.put(`${BACKEND_URL}/manuscripts/${manuscript.title}/update/WIT`)
@@ -129,7 +155,7 @@ const handleAddReferee = (email) => {
       <p><strong>Email:</strong> {manuscript.email}</p>
       <p><strong>Abstract:</strong> {manuscript.abstract}</p>
       <p><strong>Text:</strong> {manuscript.text}</p>
-      <p><strong>Status:</strong> {manuscript.curr_state}</p>
+      <p><strong>Status:</strong> {state[manuscript.curr_state] || manuscript.curr_state}</p>
 
 
       {/* Display current assigned referees */}
@@ -153,6 +179,7 @@ const handleAddReferee = (email) => {
           <p>No referees assigned yet.</p>
         )}
       </div>
+
       {/* Dropdown to select a new referee */}
       <div className="form-group mt-4">
         <label><strong>Select Referee to Add:</strong></label>
@@ -167,36 +194,57 @@ const handleAddReferee = (email) => {
           ))}
         </select>
       </div>
-      <form>
-        {!isWithdrawn ? (
-          <button
-            className="btn btn-primary"
-            type="button"
-            onClick={handleWithdraw}
-          >
-            Withdraw
-          </button>
-        ) : (
-          <p className="alert alert-warning mt-3">
-            This manuscript has been withdrawn.
-          </p>
-        )}
-      </form>
-      <form>
+
+      {/* Dropdown to select an action */}
+      <div className="form-group mt-4">
+        <label><strong>Valid Actions:</strong></label>
+        <select
+          className="form-select"
+          defaultValue=""
+          onChange={(e) => console.log("Selected action:", e.target.value)}
+        >
+          <option value="" disabled>Select an action</option>
+          {Object.keys(validActions).map((code) => (
+            <option key={code} value={code}>{validActions[code]}</option>
+          ))}
+        </select>
+      </div>
+
+      {/* Buttons */}
+      <div className="d-flex flex-wrap gap-2 mt-4">
+        <form>
+          {!isWithdrawn ? (
+            <button
+              className="btn btn-primary"
+              type="button"
+              onClick={handleWithdraw}
+              style={{ marginTop: '20px' }}
+            >
+              Withdraw
+            </button>
+          ) : (
+            <p className="alert alert-warning mt-3">
+              This manuscript has been withdrawn.
+            </p>
+          )}
+        </form>
+        <form>
+          <Link to="/manuscripts">
+            <button
+              className="btn btn-sm btn-danger"
+              onClick={handleDelete}
+              style={{ marginTop: '20px' }}
+            > Delete
+            </button>
+          </Link>
+        </form>
+        {/* Button to return to /manuscripts*/}
         <Link to="/manuscripts">
-          <button
-            className="btn btn-sm btn-danger"
-            onClick={handleDelete}
-          > Delete
+          <button className="btn btn-secondary" type="button" style={{ marginTop: '20px' }} >
+            Return to Dashboard
           </button>
         </Link>
-      </form>
-      {/* Button to return to /manuscripts*/}
-      <Link to="/manuscripts">
-        <button className="btn btn-secondary" type="button" style={{ marginTop: '20px' }} >
-          Return to Dashboard
-        </button>
-      </Link>
+      </div>
     </div>
   );
 }
