@@ -16,8 +16,9 @@ function ManuscriptDetails() {
   const [assignedReferees, setAssignedReferees] = useState({});
   const [error, setError] = useState('');
   const [isWithdrawn, setWithdrawn] = useState(false);
-  const [state, setState] = useState({})
+  const [state, setState] = useState('')
   const [validActions, setValidActions] = useState([]);
+  const [validStates, setValidStates] = useState([]);
 
 
   const ManuscriptEP = `${BACKEND_URL}/manuscripts/${manuscript.title}`;
@@ -54,7 +55,7 @@ function ManuscriptDetails() {
     axios
       .get(StatesEP)
       .then(({ data }) => {
-        setState(data);
+        setValidStates(data);
       })
       .catch((err) => {
         setError(`Error fetching roles: ${err.message}`);
@@ -155,8 +156,7 @@ function ManuscriptDetails() {
       <p><strong>Email:</strong> {manuscript.email}</p>
       <p><strong>Abstract:</strong> {manuscript.abstract}</p>
       <p><strong>Text:</strong> {manuscript.text}</p>
-      <p><strong>Status:</strong> {state[manuscript.curr_state] || manuscript.curr_state}</p>
-
+      <p><strong>Status:</strong> {validStates[manuscript.curr_state] || manuscript.curr_state}</p>
 
       {/* Display current assigned referees */}
       <div className="mt-4">
@@ -191,6 +191,21 @@ function ManuscriptDetails() {
           <option value="" disabled>Select a Referee</option>
           {refereeList.map((email, index) => (
             <option key={index} value={email}>{email}</option>
+          ))}
+        </select>
+      </div>
+      
+      {/* Dropdown to select a state*/}
+      <div className="form-group mt-4">
+        <label><strong>Valid States:</strong></label>
+        <select
+          className="form-select"
+          value = {state}
+          onChange={(e) => setState("Selected state:", e.target.value)}
+        >
+          <option value="" disabled>Select an action</option>
+          {Object.keys(validStates).map((code) => (
+            <option key={code} value={code}>{validStates[code]}</option>
           ))}
         </select>
       </div>
