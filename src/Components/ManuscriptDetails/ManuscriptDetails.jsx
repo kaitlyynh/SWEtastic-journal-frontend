@@ -16,7 +16,7 @@ function ManuscriptDetails() {
   const [assignedReferees, setAssignedReferees] = useState({});
   const [error, setError] = useState('');
   const [isWithdrawn, setWithdrawn] = useState(false);
-  const [state, setState] = useState('')
+  // const [state, setState] = useState('')
   const [validActions, setValidActions] = useState([]);
   const [validStates, setValidStates] = useState([]);
 
@@ -135,6 +135,7 @@ function ManuscriptDetails() {
     axios.delete(`${BACKEND_URL}/manuscripts/${encodeURIComponent(manuscript.title)}/delete`)
       .then(() => {
         alert("Successfully deleted manuscript");
+        window.location.reload()
       })
       .catch(err => {
         console.log(err);
@@ -153,7 +154,7 @@ function ManuscriptDetails() {
 
       <p><strong>Title:</strong> {manuscript.title}</p>
       <p><strong>Author:</strong> {manuscript.author}</p>
-      <p><strong>Email:</strong> {manuscript.email}</p>
+      <p><strong>Email:</strong> {manuscript.author_email}</p>
       <p><strong>Abstract:</strong> {manuscript.abstract}</p>
       <p><strong>Text:</strong> {manuscript.text}</p>
       <p><strong>Status:</strong> {validStates[manuscript.curr_state] || manuscript.curr_state}</p>
@@ -195,20 +196,6 @@ function ManuscriptDetails() {
         </select>
       </div>
       
-      {/* Dropdown to select a state*/}
-      <div className="form-group mt-4">
-        <label><strong>Valid States:</strong></label>
-        <select
-          className="form-select"
-          value = {state}
-          onChange={(e) => setState("Selected state:", e.target.value)}
-        >
-          <option value="" disabled>Select an action</option>
-          {Object.keys(validStates).map((code) => (
-            <option key={code} value={code}>{validStates[code]}</option>
-          ))}
-        </select>
-      </div>
 
       {/* Dropdown to select an action */}
       <div className="form-group mt-4">
@@ -218,7 +205,7 @@ function ManuscriptDetails() {
           defaultValue=""
           onChange={(e) => console.log("Selected action:", e.target.value)}
         >
-          <option value="" disabled>Select an action</option>
+          <option value="" disabled>Select an Action</option>
           {Object.keys(validActions).map((code) => (
             <option key={code} value={code}>{validActions[code]}</option>
           ))}

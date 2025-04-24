@@ -20,8 +20,7 @@ function Manuscript() {
     const [info, setInfo] = useState('');
     const [manuscripts, setManuscripts] = useState([]);
     const [title, setTitle] = useState('');
-    const [author, setAuthor] = useState('');
-    const [email, setEmail] = useState('');
+    const [author_email, setAuthorEmail] = useState('');
     const [abstract, setAbstract] = useState('');
     const [text, setText] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
@@ -42,8 +41,7 @@ function Manuscript() {
         event.preventDefault();
         const newManuscript = {
             title,
-            author,
-            email,
+            author_email,
             abstract,
             text,
         };
@@ -57,8 +55,7 @@ function Manuscript() {
         .then(() => {
             fetchManuscripts();
             setTitle(''); 
-            setAuthor('');
-            setEmail('');
+            setAuthorEmail('');
             setAbstract('');
             setText('');
             window.location.reload()
@@ -98,7 +95,6 @@ function Manuscript() {
                         value={searchQuery} 
                         onChange={(e) => setSearchQuery(e.target.value)} 
                     />
-                    <button type="submit">Search</button>
                 </form>
 
                 {/* Display Manuscripts, should title be case sensitive? */}
@@ -131,19 +127,12 @@ function Manuscript() {
                                 value={title} 
                                 onChange={(e) => setTitle(e.target.value)} 
                             />
-                            <p className="card-text"><strong>Author:</strong></p>
-                            <input 
-                                type="text" 
-                                placeholder="Author" 
-                                value={author} 
-                                onChange={(e) => setAuthor(e.target.value)} 
-                            />
                             <p className="card-text"><strong>Author Email:</strong></p>
                             <input 
                                 type="text" 
                                 placeholder="Email" 
-                                value={email} 
-                                onChange={(e) => setEmail(e.target.value)} 
+                                value={author_email} 
+                                onChange={(e) => setAuthorEmail(e.target.value)} 
                             />
                             <p className="card-text"><strong>Abstract:</strong></p>
                             <input 
