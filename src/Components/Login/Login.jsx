@@ -20,6 +20,8 @@ function Login() {
       if (res.status === 200) {
         localStorage.setItem("loggedIn", "true");
         localStorage.setItem("username", res.data.name);
+        console.log(res.data); // See if .name is in there
+
 
         setTimeout(() => {
           navigate('/'); // home page

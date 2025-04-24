@@ -18,6 +18,7 @@ import Login from './Components/Login/Login';
 import ProtectedRoute from './Components/ProtectedRoute/ProtectedRoute';
 import Masthead from "./Components/Masthead/Masthead";
 import ManuscriptDetails from './Components/ManuscriptDetails/ManuscriptDetails';
+import Profile from './Components/Profile/Profile';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
         <Route index element={<Home />} />
 
         {/* protected */}
+        <Route path="/profile" element={<Profile />} />
         <Route
           path="people"
           element={

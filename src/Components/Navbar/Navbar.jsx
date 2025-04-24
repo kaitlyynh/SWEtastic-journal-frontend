@@ -34,10 +34,13 @@ function NavigationBar() {
   const PAGES = isLoggedIn
     ? [
         { label: 'Home', destination: '/home' },
+        {label: "Profile", destination: "/profile"},
         { label: 'View All People', destination: '/people' },
         { label: 'Masthead', destination: '/masthead'},
         { label: 'Submissions', destination: '/manuscripts' },
         { label: 'Logout', onClick: handleLogout }
+
+
       ]
     : [
         { label: 'Home', destination: '/home' },
