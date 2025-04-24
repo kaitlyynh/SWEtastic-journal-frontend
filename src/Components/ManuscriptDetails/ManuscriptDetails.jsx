@@ -16,15 +16,16 @@ function ManuscriptDetails() {
   const [assignedReferees, setAssignedReferees] = useState({});
   const [error, setError] = useState('');
   const [isWithdrawn, setWithdrawn] = useState(false);
-  // const [state, setState] = useState('')
-  const [validActions, setValidActions] = useState([]);
-  const [validStates, setValidStates] = useState([]);
+  const [validActions, setValidActions] = useState([])
+  const [allValidActions, setAllValidActions] = useState([]);
+  const [allValidStates, setAllValidStates] = useState([]);
 
 
   const ManuscriptEP = `${BACKEND_URL}/manuscripts/${manuscript.title}`;
   const RefEP = `${BACKEND_URL}/roles/RE`;
-  const ActionsEP = `${BACKEND_URL}/manuscripts/ValidActions`;
-  const StatesEP = `${BACKEND_URL}/manuscripts/ValidStates`;
+  const AllActionsEP = `${BACKEND_URL}/manuscripts/ValidActions`;
+  const ActEP = `${BACKEND_URL}/manuscripts/ValidActions/${manuscript.curr_state}`;
+  const AllStatesEP = `${BACKEND_URL}/manuscripts/ValidStates`;
 
   // const PERSON_EP = `${BACKEND_URL}/people/${initialPerson.email}`
 
@@ -43,6 +44,18 @@ function ManuscriptDetails() {
       })
       .catch((err) => setError(`Error fetching manuscript details: ${err.message}`));
 
+
+    axios
+      .get(ActEP)
+      .then(({ data }) => {
+        setValidActions(data);
+        console.log("Valid Actions:", data);
+      })
+      .catch((err) => {
+        setError(`Error fetching actions: ${err.message}`);
+      });
+
+
     axios.get(RefEP)
       .then((response) => {
         console.log("Referees emails:", response.data);
@@ -53,18 +66,18 @@ function ManuscriptDetails() {
       });
 
     axios
-      .get(StatesEP)
+      .get(AllStatesEP)
       .then(({ data }) => {
-        setValidStates(data);
+        setAllValidStates(data);
       })
       .catch((err) => {
-        setError(`Error fetching roles: ${err.message}`);
+        setError(`Error fetching states: ${err.message}`);
       });
 
     axios
-      .get(ActionsEP)
+      .get(AllActionsEP)
       .then(({ data }) => {
-        setValidActions(data);
+        setAllValidActions(data);
       })
       .catch((err) => {
         setError(`Error fetching actions: ${err.message}`);
@@ -157,7 +170,7 @@ function ManuscriptDetails() {
       <p><strong>Email:</strong> {manuscript.author_email}</p>
       <p><strong>Abstract:</strong> {manuscript.abstract}</p>
       <p><strong>Text:</strong> {manuscript.text}</p>
-      <p><strong>Status:</strong> {validStates[manuscript.curr_state] || manuscript.curr_state}</p>
+      <p><strong>Status:</strong> {allValidStates[manuscript.curr_state] || manuscript.curr_state}</p>
 
       {/* Display current assigned referees */}
       <div className="mt-4">
@@ -195,7 +208,6 @@ function ManuscriptDetails() {
           ))}
         </select>
       </div>
-      
 
       {/* Dropdown to select an action */}
       <div className="form-group mt-4">
@@ -207,7 +219,9 @@ function ManuscriptDetails() {
         >
           <option value="" disabled>Select an Action</option>
           {Object.keys(validActions).map((code) => (
-            <option key={code} value={code}>{validActions[code]}</option>
+            <option key={code} value={code}>
+              {allValidActions[validActions[code]] || validActions[code]} 
+            </option>
           ))}
         </select>
       </div>
