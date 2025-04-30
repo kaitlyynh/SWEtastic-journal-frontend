@@ -19,6 +19,8 @@ function ManuscriptDetails() {
   const [validActions, setValidActions] = useState([])
   const [allValidActions, setAllValidActions] = useState([]);
   const [allValidStates, setAllValidStates] = useState([]);
+  const [selectedAction, setSelectedAction] = useState('');
+
 
 
   const ManuscriptEP = `${BACKEND_URL}/manuscripts/${manuscript.title}`;
@@ -195,19 +197,21 @@ function ManuscriptDetails() {
       </div>
 
       {/* Dropdown to select a new referee */}
-      <div className="form-group mt-4">
-        <label><strong>Select Referee to Add:</strong></label>
-        <select
-          className="form-select"
-          onChange={(e) => handleAddReferee(e.target.value)}
-          defaultValue=""
-        >
-          <option value="" disabled>Select a Referee</option>
-          {refereeList.map((email, index) => (
-            <option key={index} value={email}>{email}</option>
-          ))}
-        </select>
-      </div>
+            {selectedAction === 'ARF' && (
+        <div className="form-group mt-4">
+          <label><strong>Select Referee to Add:</strong></label>
+          <select
+            className="form-select"
+            onChange={(e) => handleAddReferee(e.target.value)}
+            defaultValue=""
+          >
+            <option value="" disabled>Select a Referee</option>
+            {refereeList.map((email, index) => (
+              <option key={index} value={email}>{email}</option>
+            ))}
+          </select>
+        </div>
+      )}
 
       {/* Dropdown to select an action */}
       <div className="form-group mt-4">
@@ -215,14 +219,23 @@ function ManuscriptDetails() {
         <select
           className="form-select"
           defaultValue=""
-          onChange={(e) => console.log("Selected action:", e.target.value)}
+          // onChange={(e) => console.log("Selected action:", e.target.value)}
+          onChange={(e) => setSelectedAction(e.target.value)}
+
         >
           <option value="" disabled>Select an Action</option>
-          {Object.keys(validActions).map((code) => (
+          {/* {Object.keys(validActions).map((code) => (
             <option key={code} value={code}>
-              {allValidActions[validActions[code]] || validActions[code]} 
-            </option>
-          ))}
+              {allValidActions[validActions[code]] || validActions[code]}
+                   </option>
+          ))}  */}
+              {validActions.map((code) => (
+                  <option key={code} value={code}>
+                    {allValidActions[code] || code}
+                  </option>
+                ))}
+
+       
         </select>
       </div>
 
