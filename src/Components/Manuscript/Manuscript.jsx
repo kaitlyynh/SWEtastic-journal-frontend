@@ -71,6 +71,8 @@ function Manuscript() {
 
     const searchManuscripts = (event) => {
         event.preventDefault();
+        const trimmedQuery = searchQuery.trim();
+        if (trimmedQuery === "") return; // ignore empty searches
         axios
             .get(`${ManuscriptSearchEP}?query=${searchQuery}`)
             .then(({ data }) => {
@@ -99,20 +101,23 @@ function Manuscript() {
 
                 {/* Display Manuscripts, should title be case sensitive? */}
                 <ul>
-                    {info}
-                    {manuscripts
-                    .filter((manuscript) => manuscript && manuscript.title &&
-                        searchQuery === "" || manuscript.title.includes(searchQuery)
-                    )
-                    .map((manuscript, index) => (
-                        <li key={index}>
-                        <Link to={`/manuscripts/${manuscript.title}`} state={{ manuscript }}>
-                            {manuscript.title}
-                        </Link>
-                        {" "}
-                        by {manuscript.author}
+                {info}
+                {manuscripts
+                .filter((manuscript) => {
+                    if (!manuscript || !manuscript.title) return false;
+                    return (
+                    searchQuery.trim() === "" ||
+                    manuscript.title.toLowerCase().includes(searchQuery.toLowerCase().trim())
+                    );
+                })
+                .map((manuscript, index) => (
+                    <li key={index}>
+                    <Link to={`/manuscripts/${manuscript.title}`} state={{ manuscript }}>
+                        {manuscript.title}
+                    </Link>{" "}
+                    by {manuscript.author}
                     </li>
-                    ))}
+                ))}
                 </ul>
 
                 {/* Add Manuscript Form */}
