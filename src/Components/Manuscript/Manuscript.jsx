@@ -187,18 +187,22 @@ function Manuscript() {
                                 onChange={(e) => setAuthorEmail(e.target.value)} 
                             />
                             <p className="card-text"><strong>Abstract:</strong></p>
-                            <input 
+                            <textarea 
                                 type="text" 
-                                placeholder="Abstarct" 
+                                placeholder="Abstract" 
                                 value={abstract} 
-                                onChange={(e) => setAbstract(e.target.value)} 
+                                onChange={(e) => setAbstract(e.target.value)}
+                                rows={4}
+                                cols={50} 
                             />
                             <p className="card-text"><strong>Text:</strong></p>
-                            <input 
+                            <textarea
                                 type="text" 
                                 placeholder="Text" 
                                 value={text} 
                                 onChange={(e) => setText(e.target.value)} 
+                                rows={4}
+                                cols={50}
                             />
                             <button className="btn btn-primary" type="submit">Add Manuscript</button>
                         </form>

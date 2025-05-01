@@ -116,3 +116,12 @@ form button[type=button]:hover {
   padding: 6px;
   font-size: 15px;
 }
+
+form textarea {
+  display: block;
+  margin: .5rem 0 1rem 0;
+  padding: 1rem 0.5rem 0.5rem 0.5rem;
+  border-radius: 5px;
+  border: 2px solid var(--accent-color);
+  font-size: 1rem;
+}
