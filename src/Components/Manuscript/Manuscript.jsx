@@ -100,7 +100,7 @@ function Manuscript() {
                 </form>
 
                 {/* Display Manuscripts, should title be case sensitive? */}
-                <ul>
+                {/* <ul>
                 {info}
                 {manuscripts
                 .filter((manuscript) => {
@@ -118,8 +118,55 @@ function Manuscript() {
                     by {manuscript.author}
                     </li>
                 ))}
-                </ul>
-
+                </ul> */}
+        <div className="container mt-4">
+            {info}
+            <h5><strong>All Manuscripts</strong></h5>
+            <div className="table-responsive">
+                <table className="table table-striped table-bordered">
+                <thead className="table-light">
+                    <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Author Email</th>
+                    <th>Abstract</th>
+                    <th>Text</th>
+                    <th>State</th>
+                    <th>View/Edit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {manuscripts
+                    .filter((manuscript) => {
+                        if (!manuscript || !manuscript.title) return false;
+                        return (
+                        searchQuery.trim() === "" ||
+                        manuscript.title.toLowerCase().includes(searchQuery.toLowerCase().trim())
+                        );
+                    })
+                    .map((manuscript, index) => (
+                        <tr key={index}>
+                        <td>{manuscript.title}</td>
+                        <td>{manuscript.author}</td>
+                        <td>{manuscript.author_email}</td>
+                        <td>{manuscript.abstract}</td>
+                        <td>{manuscript.text}</td>
+                        <td>{manuscript.curr_state}</td>
+                        <td>
+                            <Link
+                            to={`/manuscripts/${encodeURIComponent(manuscript.title)}`}
+                            state={{ manuscript }}
+                            className="btn btn-sm btn-outline-primary"
+                            >
+                            View/Edit
+                            </Link>
+                        </td>
+                        </tr>
+                    ))}
+                </tbody>
+                </table>
+            </div>
+            </div>
                 {/* Add Manuscript Form */}
                 <div className="card my-3">
                     <h5><strong>Submit a Manuscript</strong></h5>
