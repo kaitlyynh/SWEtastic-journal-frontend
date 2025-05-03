@@ -7,13 +7,14 @@ import { BACKEND_URL } from '../../constants';
 const ManuscriptEP = `${BACKEND_URL}/manuscripts`;
 const ManuscriptSearchEP = `${BACKEND_URL}/manuscripts/search`;
 const Manuscript_Create_EP = `${BACKEND_URL}/manuscripts/create`;
+const AllStatesEP = `${BACKEND_URL}/manuscripts/ValidStates`;
 
 
 function peopleObjectToArray(Data) {
     const keys = Object.keys(Data);
     const people = keys.map((key) => Data[key]);
     return people;
-  }
+}
 
 function Manuscript() {
     const [error, setError] = useState('');
@@ -24,6 +25,8 @@ function Manuscript() {
     const [abstract, setAbstract] = useState('');
     const [text, setText] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
+    const [showForm, setShowForm] = useState(false);
+    const [allValidStates, setAllValidStates] = useState([]);
 
     const fetchManuscripts = () => {
         axios.get(ManuscriptEP)
@@ -32,9 +35,17 @@ function Manuscript() {
                 setManuscripts(manuscriptsArray);
                 if (manuscriptsArray.length === 0) {
                     setInfo("No manuscripts found.");
-                  }
+                }
             })
             .catch((error) => setError(`There was a problem retrieving manuscripts. ${error.message}`));
+        axios
+            .get(AllStatesEP)
+            .then(({ data }) => {
+                setAllValidStates(data);
+            })
+            .catch((err) => {
+                setError(`Error fetching states: ${err.message}`);
+            });
     };
 
     const addManuscript = (event) => {
@@ -52,21 +63,21 @@ function Manuscript() {
                 'Accept': 'application/json',
             }
         })
-        .then(() => {
-            fetchManuscripts();
-            setTitle(''); 
-            setAuthorEmail('');
-            setAbstract('');
-            setText('');
-            window.location.reload()
-        })
-        .catch((error) => {
-            if (error.response && error.response.data && error.response.data.message) {
-                setError(`Error: ${error.response.data.message}`);
-            } else {
-                setError(`There was an unexpected error adding the manuscript. ${error}`);
-            }
-        });
+            .then(() => {
+                fetchManuscripts();
+                setTitle('');
+                setAuthorEmail('');
+                setAbstract('');
+                setText('');
+                window.location.reload()
+            })
+            .catch((error) => {
+                if (error.response && error.response.data && error.response.data.message) {
+                    setError(`Error: ${error.response.data.message}`);
+                } else {
+                    setError(`There was an unexpected error adding the manuscript. ${error}`);
+                }
+            });
     };
 
     const searchManuscripts = (event) => {
@@ -85,129 +96,144 @@ function Manuscript() {
     useEffect(fetchManuscripts, []);
 
     return (
-        <div className="wrapper">
+        <div className="wrapper pt-5">
             <header>
                 {error && <p className="error">{error}</p>}
-
-                {/* Search Form */}
-                <form onSubmit={searchManuscripts}>
-                    <input 
-                        type="text" 
-                        placeholder="Search Manuscripts..." 
-                        value={searchQuery} 
-                        onChange={(e) => setSearchQuery(e.target.value)} 
-                    />
-                </form>
-
-                {/* Display Manuscripts, should title be case sensitive? */}
-                {/* <ul>
-                {info}
-                {manuscripts
-                .filter((manuscript) => {
-                    if (!manuscript || !manuscript.title) return false;
-                    return (
-                    searchQuery.trim() === "" ||
-                    manuscript.title.toLowerCase().includes(searchQuery.toLowerCase().trim())
-                    );
-                })
-                .map((manuscript, index) => (
-                    <li key={index}>
-                    <Link to={`/manuscripts/${manuscript.title}`} state={{ manuscript }}>
-                        {manuscript.title}
-                    </Link>{" "}
-                    by {manuscript.author}
-                    </li>
-                ))}
-                </ul> */}
-        <div className="container mt-4">
-            {info}
-            <h5><strong>All Manuscripts</strong></h5>
-            <div className="table-responsive">
-                <table className="table table-striped table-bordered">
-                <thead className="table-light">
-                    <tr>
-                    <th>Title</th>
-                    <th>Author</th>
-                    <th>Author Email</th>
-                    <th>Abstract</th>
-                    <th>Text</th>
-                    <th>State</th>
-                    <th>View/Edit</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {manuscripts
-                    .filter((manuscript) => {
-                        if (!manuscript || !manuscript.title) return false;
-                        return (
-                        searchQuery.trim() === "" ||
-                        manuscript.title.toLowerCase().includes(searchQuery.toLowerCase().trim())
-                        );
-                    })
-                    .map((manuscript, index) => (
-                        <tr key={index}>
-                        <td>{manuscript.title}</td>
-                        <td>{manuscript.author}</td>
-                        <td>{manuscript.author_email}</td>
-                        <td>{manuscript.abstract}</td>
-                        <td>{manuscript.text}</td>
-                        <td>{manuscript.curr_state}</td>
-                        <td>
-                            <Link
-                            to={`/manuscripts/${encodeURIComponent(manuscript.title)}`}
-                            state={{ manuscript }}
-                            className="btn btn-sm btn-outline-primary"
-                            >
-                            View/Edit
-                            </Link>
-                        </td>
-                        </tr>
-                    ))}
-                </tbody>
-                </table>
-            </div>
-            </div>
-                {/* Add Manuscript Form */}
-                <div className="card my-3">
-                    <h5><strong>Submit a Manuscript</strong></h5>
-                    <div className="card-body d-flex mb-3">
+                {/* Create Manuscript*/}
+                {showForm && (
+                    <div className="mb-4 p-4 border rounded" style={{ backgroundColor: "#f8f9fa" }}>
+                        <h5 className="mb-3"><strong>Submit a Manuscript</strong></h5>
                         <form onSubmit={addManuscript}>
-                            <p className="card-text me-3"><strong>Title:</strong></p>
-                            <input 
-                                type="text" 
-                                placeholder="Title" 
-                                value={title} 
-                                onChange={(e) => setTitle(e.target.value)} 
-                            />
-                            <p className="card-text"><strong>Author Email:</strong></p>
-                            <input 
-                                type="text" 
-                                placeholder="Email" 
-                                value={author_email} 
-                                onChange={(e) => setAuthorEmail(e.target.value)} 
-                            />
-                            <p className="card-text"><strong>Abstract:</strong></p>
-                            <textarea 
-                                type="text" 
-                                placeholder="Abstract" 
-                                value={abstract} 
-                                onChange={(e) => setAbstract(e.target.value)}
-                                rows={4}
-                                cols={50} 
-                            />
-                            <p className="card-text"><strong>Text:</strong></p>
-                            <textarea
-                                type="text" 
-                                placeholder="Text" 
-                                value={text} 
-                                onChange={(e) => setText(e.target.value)} 
-                                rows={4}
-                                cols={50}
-                            />
-                            <button className="btn btn-primary" type="submit">Add Manuscript</button>
+                            <div className="row mb-3">
+                                <div className="col-md-6">
+                                    <label className="mb-4 form-label"><strong>Title:</strong></label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        placeholder="Title"
+                                        value={title}
+                                        onChange={(e) => setTitle(e.target.value)}
+                                    />
+                                </div>
+                                <div className="col-md-6">
+                                    <label className="mb-4 form-label"><strong>Author Email:</strong></label>
+                                    <input
+                                        type="email"
+                                        className="form-control"
+                                        placeholder="Email"
+                                        value={author_email}
+                                        onChange={(e) => setAuthorEmail(e.target.value)}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="mb-3">
+                                <label className="mb-4 form-label"><strong>Abstract:</strong></label>
+                                <textarea
+                                    className="form-control"
+                                    placeholder="Abstract"
+                                    value={abstract}
+                                    onChange={(e) => setAbstract(e.target.value)}
+                                    rows={3}
+                                />
+                            </div>
+
+                            <div className="mb-3">
+                                <label className="mb-4 form-label"><strong>Text:</strong></label>
+                                <textarea
+                                    className="form-control"
+                                    placeholder="Text"
+                                    value={text}
+                                    onChange={(e) => setText(e.target.value)}
+                                    rows={5}
+                                />
+                            </div>
+
+                            <button className="btn btn-primary" type="submit">
+                                Add Manuscript
+                            </button>
+                            {showForm && (
+                                <button
+                                    className="btn btn-danger me-2"
+                                    onClick={() => setShowForm(false)}
+                                >
+                                    Close Form
+                                </button>
+                            )}
                         </form>
                     </div>
+                )}
+                <div className="container mt-4">
+                    {info}
+                    <h5><strong>All Manuscripts</strong></h5>
+                    {/* Search Form */}
+                    <form onSubmit={searchManuscripts}>
+                        <input
+                            type="text"
+                            placeholder="Search Manuscripts..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                        />
+                    </form>
+                    {/* dropdown to create manu */}
+                    <div className="d-flex align-items-center mb-3">
+                        <h1>
+                            {!showForm && (
+                                <button
+                                    className="btn btn-success me-2"
+                                    onClick={() => setShowForm(true)}
+                                >
+                                    Submit a Manuscript
+                                </button>
+                            )}
+                        </h1>
+                    </div>
+                    <div className="table-responsive">
+                        <table className="table table-striped table-bordered">
+                            <thead className="table-light">
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Author</th>
+                                    {/* <th>Author Email</th> */}
+                                    {/* <th>Abstract</th> */}
+                                    {/* <th>Text</th> */}
+                                    <th>State</th>
+                                    <th>View/Edit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {manuscripts
+                                    .filter((manuscript) => {
+                                        if (!manuscript || !manuscript.title) return false;
+                                        return (
+                                            searchQuery.trim() === "" ||
+                                            manuscript.title.toLowerCase().includes(searchQuery.toLowerCase().trim())
+                                        );
+                                    })
+                                    .map((manuscript, index) => (
+                                        <tr key={index}>
+                                            <td>{manuscript.title}</td>
+                                            <td>{manuscript.author}</td>
+                                            {/* <td>{manuscript.author_email}</td> */}
+                                            {/* <td>{manuscript.abstract}</td> */}
+                                            {/* <td>{manuscript.text}</td> */}
+                                            <td>{allValidStates[manuscript.curr_state]}</td>
+                                            <td>
+                                                <Link
+                                                    to={`/manuscripts/${encodeURIComponent(manuscript.title)}`}
+                                                    state={{ manuscript }}
+                                                    className="btn btn-sm btn-outline-primary"
+                                                >
+                                                    View/Edit
+                                                </Link>
+                                            </td>
+                                        </tr>
+                                    ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
+
             </header>
         </div>
     );
