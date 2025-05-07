@@ -153,6 +153,21 @@ function ManuscriptDetails() {
       <p><strong>Abstract:</strong> {manuscript.abstract}</p>
       <p><strong>Text:</strong> {manuscript.text}</p>
       <p><strong>Status:</strong> {allValidStates[manuscript.curr_state] || manuscript.curr_state}</p>
+      {validActions.length > 0 && (
+        <div className="mt-4 p-3 border rounded bg-light">
+          <h5>📘 Action Workflow</h5>
+          <p><strong>Current State:</strong> {allValidStates[manuscript.curr_state] || manuscript.curr_state}</p>
+          <p><strong>Available Actions:</strong></p>
+          <ul className="mb-0">
+            {validActions.map((actionCode, index) => (
+              <li key={index}>
+                <strong>{allValidActions[actionCode] || actionCode}</strong>
+              </li>
+          ))}
+        </ul>
+      </div>
+)}
+
 
       {/* Display current assigned referees */}
       <div className="mt-4">
