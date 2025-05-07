@@ -104,6 +104,16 @@ function Manuscript() {
                     <div className="mb-4 p-4 border rounded" style={{ backgroundColor: "#f8f9fa" }}>
                         <h5 className="mb-3"><strong>Submit a Manuscript</strong></h5>
                         <form onSubmit={addManuscript}>
+                        <div className="card p-3 mt-4 bg-light">
+                            <h5>Submission Guidelines</h5>
+                            <ul>
+                                <li>Use your email</li>
+                                <li>Keep abstract under 250 words</li>
+                                <li>Text field should be formatted cleanly</li>
+                                <li>Once submitted, you can assign referees</li>
+                            </ul>
+                            </div>
+                            <br></br>
                             <div className="row mb-3">
                                 <div className="col-md-6">
                                     <label className="mb-4 form-label"><strong>Title:</strong></label>
