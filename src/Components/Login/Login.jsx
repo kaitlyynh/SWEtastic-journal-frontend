@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { BACKEND_URL } from '../../constants';
 import { useNavigate, Link } from 'react-router-dom';
-import './Login.css'; // 👈 new CSS file
+import './Login.css';
 
 function Login() {
   const [form, setForm] = useState({ email: '', password: '' });
@@ -18,10 +18,16 @@ function Login() {
       setMessage(res.data.message);
 
       if (res.status === 200) {
+        // Store user information in localStorage
         localStorage.setItem("loggedIn", "true");
         localStorage.setItem("username", res.data.name);
-        console.log(res.data); // See if .name is in there
-
+        localStorage.setItem("email", form.email); // Store the email from the form
+        
+        console.log("Storing user data:", {
+          name: res.data.name,
+          email: form.email,
+          response: res.data
+        });
 
         setTimeout(() => {
           navigate('/'); // home page
