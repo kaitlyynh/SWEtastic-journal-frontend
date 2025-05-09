@@ -21,32 +21,38 @@ NavLink.propTypes = {
 };
 
 function NavigationBar() {
-
   const isLoggedIn = localStorage.getItem("loggedIn") === "true";
+  const role = localStorage.getItem("role");
   const navigate = useNavigate();
 
   const handleLogout = () => {
     localStorage.removeItem("loggedIn");
     localStorage.removeItem("username");
+    localStorage.removeItem("role");
     navigate("/login");
   };
 
   const PAGES = isLoggedIn
+  ? role === "author" || role === "admin" || role === "Author" || role === "Admin"
     ? [
         { label: 'Home', destination: '/home' },
-        {label: "Profile", destination: "/profile"},
+        { label: 'Profile', destination: '/profile' },
         { label: 'View All People', destination: '/people' },
-        { label: 'Masthead', destination: '/masthead'},
-        { label: 'Submissions', destination: '/manuscripts' },
         { label: 'Logout', onClick: handleLogout }
-
-
       ]
     : [
         { label: 'Home', destination: '/home' },
-        { label: 'Register', destination: '/registration' },
-        { label: 'Login', destination: '/login' }
-      ];
+        { label: 'Profile', destination: '/profile' },
+        { label: 'View All People', destination: '/people' },
+        { label: 'Masthead', destination: '/masthead' },
+        { label: 'Submissions', destination: '/manuscripts' },
+        { label: 'Logout', onClick: handleLogout }
+      ]
+  : [
+      { label: 'Home', destination: '/home' },
+      { label: 'Register', destination: '/registration' },
+      { label: 'Login', destination: '/login' }
+    ];
 
 
   return (

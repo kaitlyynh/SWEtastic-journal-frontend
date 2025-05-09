@@ -16,6 +16,7 @@ function Profile() {
     const storedName = localStorage.getItem('username');
     const loggedIn = localStorage.getItem('loggedIn');
     const email = localStorage.getItem('email');
+    
 
     if (!loggedIn) {
       navigate('/login');
@@ -39,6 +40,7 @@ function Profile() {
             // Store the email for future use
             if (user.email) {
               localStorage.setItem('email', user.email);
+
             }
           } else {
             setError('Could not find your profile. Please log out and log in again.');
@@ -77,15 +79,15 @@ function Profile() {
   }, [navigate]);
 
   // Format roles for display
-  const formatRoles = (roles) => {
-    if (!roles || roles.length === 0) return 'No roles assigned';
+  // const formatRoles = (roles) => {
+  //   if (!roles || roles.length === 0) return 'No roles assigned';
     
-    return roles.map((role, index) => (
-      <span key={index} className="role-badge">
-        {role}
-      </span>
-    ));
-  };
+  //   return roles.map((role, index) => (
+  //     <span key={index} className="role-badge">
+  //       {role}
+  //     </span>
+  //   ));
+  // };
 
   return (
     <div className="profile-page">
@@ -104,14 +106,16 @@ function Profile() {
               <div className="profile-info">
                 <p><strong>Email:</strong> {userData?.email || localStorage.getItem('email') || 'Not available'}</p>
                 
-                <div className="profile-roles">
+                {/* <div className="profile-roles">
                   <h3>Your Roles</h3>
                   <div className="roles-container">
                     {userData && userData.roles ? 
                       formatRoles(userData.roles) : 
                       'No roles assigned'}
                   </div>
-                </div>
+                </div> */}
+                <p><strong>Role:</strong> {localStorage.getItem('role') || 'Not assigned'}</p>
+
                 
                 <div className="profile-affiliation">
                   <h3>Affiliation</h3>

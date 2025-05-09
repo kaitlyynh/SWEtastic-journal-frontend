@@ -22,10 +22,12 @@ function Login() {
         localStorage.setItem("loggedIn", "true");
         localStorage.setItem("username", res.data.name);
         localStorage.setItem("email", form.email); // Store the email from the form
+        localStorage.setItem("role", res.data.role);
         
         console.log("Storing user data:", {
           name: res.data.name,
           email: form.email,
+          role: res.data.role,
           response: res.data
         });
 

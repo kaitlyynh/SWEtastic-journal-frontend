@@ -5,7 +5,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import './Registration.css';
 
 function Registration() {
-  const [form, setForm] = useState({ name: '', email: '', password: '' });
+  const [form, setForm] = useState({ name: '', email: '', password: '' , role: ''});
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
 
@@ -50,6 +50,12 @@ function Registration() {
             name="password"
             type="password"
             placeholder="Password"
+            onChange={handleChange}
+            required
+          />
+          <input
+            name="role"
+            placeholder="Full role"
             onChange={handleChange}
             required
           />
