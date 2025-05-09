@@ -100,5 +100,5 @@
   
   .nav-link:focus {
     outline: none;
-    box-shadow: 0 0 12px rgba(61, 7, 34, 0.7);
+    box-shadow: 0 0 12px #3d0722b3;
   }

@@ -1,11 +1,53 @@
-.masthead-title {
-    display: flex;
-    justify-content: center; 
-    align-items: center; 
-    text-align: center;
-    font-size: 50px;
-    font-weight: bold;
-    margin-top: 20px;
-    width: 100%; 
-    color:black;
+@import url('https://fonts.googleapis.com/css2?family=Courgette&display=swap');
+
+/* Match the profile page structure */
+.masthead-page {
+  min-height: 100vh;
+  background: #f5f5f5;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Match the profile header styling */
+.masthead-header {
+  background: #fed2e2;
+  font-family: 'Courgette', cursive;
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.masthead-header h1 {
+  margin: 0;
+  color: #6a0738;
+  font-size: 2.5rem;
+}
+
+/* Content area styling */
+.masthead-content {
+  padding: 2rem;
+  flex-grow: 1;
+}
+
+/* Styling for editor sections */
+.masthead-content h2 {
+  color: #6a0738;
+  border-bottom: 2px solid #fed2e2;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Styling for people entries */
+.masthead-content .mb-3 {
+  margin-left: 1rem;
+}
+
+.masthead-content em {
+  font-weight: 600;
+  color: #333;
+}
+
+.masthead-content span {
+  color: #666;
+  font-size: 0.9rem;
 }

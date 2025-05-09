@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import propTypes from 'prop-types';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import './People.css';
 
 import { BACKEND_URL } from '../../constants';
 import { FaTrashAlt, FaEdit } from "react-icons/fa";
@@ -226,24 +227,28 @@ function People() {
 
 
   return (
-    <div className="container mt-4">
-      <header className="d-flex justify-content-between align-items-center mb-4">
-        <h1 className="h4">People Catalog</h1>
-        <button className="btn btn-success d-flex align-items-center" onClick={showAddPersonForm}>
-          <IoMdPersonAdd className="me-2" />
-          Add a Person
-        </button>
+    <div className="people-page">
+      <header className="people-header">
+        <h1>People Catalog</h1>
       </header>
+      
+      <div className="people-content">
+        <div className="add-button-container">
+          <button className="btn btn-success d-flex align-items-center" onClick={showAddPersonForm}>
+            <IoMdPersonAdd className="me-2" />
+            Add a Person
+          </button>
+        </div>
 
-      <AddPersonForm
-        visible={addingPerson}
-        cancel={hideAddPersonForm}
-        fetchPeople={fetchPeople}
-        setError={setError}
-        roleOptions={roleMap}
-      />
+        <AddPersonForm
+          visible={addingPerson}
+          cancel={hideAddPersonForm}
+          fetchPeople={fetchPeople}
+          setError={setError}
+          roleOptions={roleMap}
+        />
 
-      {error && <ErrorMessage message={error} />}
+        {error && <ErrorMessage message={error} />}
 
       <div className="table-responsive">
         <table className="table table-bordered table-hover align-middle">
@@ -293,6 +298,7 @@ function People() {
             ))}
           </tbody>
         </table>
+      </div>
       </div>
     </div>
   );

@@ -1,14 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Courgette&display=swap');
 
-/* src/Components/Profile/Profile.css */
-.profile-page {
+/* Match the profile page structure */
+.manuscript-page {
   min-height: 100vh;
   background: #f5f5f5;
   display: flex;
   flex-direction: column;
 }
 
-.profile-header {
+/* Match the profile header styling */
+.manuscript-header {
   background: #fed2e2;
   font-family: 'Courgette', cursive;
   padding: 1.5rem;
@@ -16,12 +17,21 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.profile-header h1 {
+.manuscript-header h1 {
   margin: 0;
-  color:#6a0738;
+  color: #6a0738;
+  font-size: 2.5rem;
 }
 
-.profile-content {
+/* Content area styling */
+.manuscript-content {
   padding: 2rem;
   flex-grow: 1;
+}
+
+/* Button container */
+.add-button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
 }

@@ -1,13 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Courgette&display=swap');
+
 .journal-title {
     display: flex;
     justify-content: center; 
     align-items: center; 
     text-align: center;
-    font-size: 50px;
-    font-weight: bold;
-    margin-top: 20px;
+    font-family: 'Courgette', cursive;
+    font-weight: 700; /* Bold weight */
+    font-size: 80px;
+    margin-top: 40px;
     width: 100%; 
-    color:black;
+    color:#6a0738;
 }
 
 

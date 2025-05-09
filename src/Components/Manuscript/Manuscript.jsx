@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import './Manuscript.css';
 
 import { BACKEND_URL } from '../../constants';
 
@@ -96,9 +97,14 @@ function Manuscript() {
     useEffect(fetchManuscripts, []);
 
     return (
-        <div className="wrapper pt-5">
-            <header>
+        <div className="manuscript-page">
+            <header className="manuscript-header">
+                <h1>All Manuscripts</h1>
+            </header>
+            
+            <div className="manuscript-content">
                 {error && <p className="error">{error}</p>}
+                
                 {/* Create Manuscript*/}
                 {showForm && (
                     <div className="mb-4 p-4 border rounded" style={{ backgroundColor: "#f8f9fa" }}>
@@ -136,7 +142,7 @@ function Manuscript() {
                                     />
                                 </div>
                             </div>
-
+    
                             <div className="mb-3">
                                 <label className="mb-4 form-label"><strong>Abstract:</strong></label>
                                 <textarea
@@ -147,7 +153,7 @@ function Manuscript() {
                                     rows={3}
                                 />
                             </div>
-
+    
                             <div className="mb-3">
                                 <label className="mb-4 form-label"><strong>Text:</strong></label>
                                 <textarea
@@ -158,7 +164,7 @@ function Manuscript() {
                                     rows={5}
                                 />
                             </div>
-
+    
                             <button className="btn btn-primary" type="submit">
                                 Add Manuscript
                             </button>
@@ -173,31 +179,33 @@ function Manuscript() {
                         </form>
                     </div>
                 )}
-                <div className="container mt-4">
+                
+                <div className="container-fluid p-0">
                     {info}
-                    <h5><strong>All Manuscripts</strong></h5>
+                    
                     {/* Search Form */}
-                    <form onSubmit={searchManuscripts}>
-                        <input
-                            type="text"
-                            placeholder="Search Manuscripts..."
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                        />
-                    </form>
-                    {/* dropdown to create manu */}
-                    <div className="d-flex align-items-center mb-3">
-                        <h1>
-                            {!showForm && (
-                                <button
-                                    className="btn btn-success me-2"
-                                    onClick={() => setShowForm(true)}
-                                >
-                                    Submit a Manuscript
-                                </button>
-                            )}
-                        </h1>
+                    <div className="d-flex justify-content-between align-items-center mb-3">
+                        <form onSubmit={searchManuscripts} className="d-flex">
+                            <input
+                                type="text"
+                                className="form-control me-2"
+                                placeholder="Search Manuscripts..."
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                            />
+                        </form>
+                        
+                        {/* Button to create manuscript */}
+                        {!showForm && (
+                            <button
+                                className="btn btn-success"
+                                onClick={() => setShowForm(true)}
+                            >
+                                Submit a Manuscript
+                            </button>
+                        )}
                     </div>
+                    
                     <div className="table-responsive">
                         <table className="table table-striped table-bordered">
                             <thead className="table-light">
@@ -243,9 +251,8 @@ function Manuscript() {
                         </table>
                     </div>
                 </div>
-
-            </header>
+            </div>
         </div>
-    );
+    );    
 }
 export default Manuscript;

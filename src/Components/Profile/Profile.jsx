@@ -19,18 +19,13 @@ function Profile() {
   }, [navigate]);
 
   return (
-    <div className="profile-container">
-      <div className="profile-card">
-        <h2>Welcome, {username}!</h2>
+    <div className="profile-page">
+      <header className="profile-header">
+        <h1>Welcome, {username}!</h1>
+      </header>
+      <div className="profile-content">
         <p>This is your profile page.</p>
-        {/* <button
-          onClick={() => {
-            localStorage.clear();
-            navigate('/login');
-          }}
-        >
-          Logout
-        </button> */}
+        {/* Add your profile content here */}
       </div>
     </div>
   );
