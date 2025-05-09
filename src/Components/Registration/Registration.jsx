@@ -16,6 +16,7 @@ function Registration() {
     e.preventDefault();
     try {
       const res = await axios.post(`${BACKEND_URL}/register`, form);
+      localStorage.setItem('role', res.data.role);
       setMessage(res.data.message);
       setTimeout(() => {
         navigate('/login');

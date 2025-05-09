@@ -24,7 +24,7 @@ function NavigationBar() {
 
   const isLoggedIn = localStorage.getItem("loggedIn") === "true";
   const navigate = useNavigate();
-
+  const role = localStorage.getItem("role"); 
   const handleLogout = () => {
     localStorage.removeItem("loggedIn");
     localStorage.removeItem("username");
@@ -68,7 +68,13 @@ function NavigationBar() {
               </button>
             )
           )}
+          
         </Nav>
+        {isLoggedIn && role && (
+          <span className="mt-2 text-white ms-auto">
+            Logged in as role of: {role}
+          </span>
+        )}
       </Navbar.Collapse>
     </Navbar>
   );

@@ -19,7 +19,7 @@ function ManuscriptDetails() {
   const [selectedAction, setSelectedAction] = useState('');
   const [selectedReferee, setSelectedReferee] = useState('');
 
-
+  const role = localStorage.getItem('role');
 
   const ManuscriptEP = `${BACKEND_URL}/manuscripts/${manuscript.title}`;
   const RefEP = `${BACKEND_URL}/roles/RE`;
@@ -44,6 +44,9 @@ function ManuscriptDetails() {
         return axios.get(ActEP);
       })
       .then(({ data }) => {
+        if (role === 'ed') {
+          data = data.filter(action => action !== 'WIT');
+        }
         setValidActions(data);
         console.log("Valid Actions based on state:", data);
       })
