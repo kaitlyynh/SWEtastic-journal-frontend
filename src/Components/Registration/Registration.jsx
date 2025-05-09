@@ -57,7 +57,6 @@ function Registration() {
             name="role"
             placeholder="Full role"
             onChange={handleChange}
-            required
           />
           <button type="submit">Register</button>
         </form>

@@ -12,6 +12,7 @@ import { IoMdPersonAdd } from "react-icons/io";
 const PEOPLE_READ_ENDPOINT = `${BACKEND_URL}/people`;
 const PEOPLE_CREATE_ENDPOINT = `${BACKEND_URL}/people/create`;
 const ROLES_ENDPOINT = `${BACKEND_URL}/roles`;
+const role = (localStorage.getItem("role") || "").toLowerCase();
 
 
 function AddPersonForm({
@@ -234,10 +235,11 @@ function People() {
       
       <div className="people-content">
         <div className="add-button-container">
+        {role !== "au" && role !== "ad" && (
           <button className="btn btn-success d-flex align-items-center" onClick={showAddPersonForm}>
             <IoMdPersonAdd className="me-2" />
             Add a Person
-          </button>
+          </button> )}
         </div>
 
         <AddPersonForm
@@ -262,41 +264,46 @@ function People() {
             </tr>
           </thead>
           <tbody>
-            {people.map((person) => (
-              <tr key={person.email}>
-                <td>
-                  {person.name}
-                </td>
-                <td>{person.email}</td>
-                <td>{person.affiliation}</td>
-                <td>{person.roles.map((role) => roleMap[role]).join(', ')}</td>
-                <td>
-                  <button className="btn btn-sm btn-success">
-                    <Link to={`/people/${person.name}`} state={{ person }}>
-                      <FaEdit color="white" />
-                    </Link>
-                  </button>
-                  <button
-                    className="btn btn-sm btn-danger"
-                    onClick={() => {
-                      axios
-                        .delete(`${PEOPLE_READ_ENDPOINT}/${person.email}`)
-                        .then(fetchPeople)
-                        .catch((error) => {
-                          if (error.response?.data?.message) {
-                            setError(`Error: ${error.response.data.message}`);
-                          } else {
-                            setError(`There was an unexpected error deleting the person. ${error}`);
-                          }
-                        });
-                    }}
-                  >
-                    <FaTrashAlt />
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
+  {people.map((person) => (
+    <tr key={person.email}>
+      <td>{person.name}</td>
+      <td>{person.email}</td>
+      <td>{person.affiliation}</td>
+      <td>{person.roles.map((role) => roleMap[role]).join(', ')}</td>
+      
+      <td>
+        {role !== "au" && role !== "ad" && (
+          <>
+            <button className="btn btn-sm btn-success me-2">
+              <Link to={`/people/${person.name}`} state={{ person }}>
+                <FaEdit color="white" />
+              </Link>
+            </button>
+
+            <button
+              className="btn btn-sm btn-danger"
+              onClick={() => {
+                axios
+                  .delete(`${PEOPLE_READ_ENDPOINT}/${person.email}`)
+                  .then(fetchPeople)
+                  .catch((error) => {
+                    if (error.response?.data?.message) {
+                      setError(`Error: ${error.response.data.message}`);
+                    } else {
+                      setError(`There was an unexpected error deleting the person. ${error}`);
+                    }
+                  });
+              }}
+            >
+              <FaTrashAlt />
+            </button>
+          </>
+        )}
+      </td>
+    </tr>
+  ))}
+</tbody>
+
         </table>
       </div>
       </div>

@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { BACKEND_URL } from '../../constants';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './Login.css';
 
 function Login() {
   const [form, setForm] = useState({ email: '', password: '' });
   const [message, setMessage] = useState('');
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
@@ -32,8 +32,8 @@ function Login() {
         });
 
         setTimeout(() => {
-          navigate('/'); // home page
-        }, 1000);
+          window.location.href = '/'; 
+        }, 1000);        
       }
     } catch (err) {
       setMessage(err.response?.data?.message || 'Error logging in');
