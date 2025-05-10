@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { BACKEND_URL } from '../../constants';
+import { BACKEND_URL, EDITOR_ROLE, WITHDRAWN } from '../../constants';
 import React from 'react';
 
 function ManuscriptDetails() {
@@ -45,8 +45,8 @@ function ManuscriptDetails() {
       })
       .then(({ data }) => {
         console.log("User's role is:", role)
-        if (role === 'ed' || role === 'ED') {
-          data = data.filter(action => action !== 'WIT');
+        if (role.toUpperCase() == EDITOR_ROLE) {
+          data = data.filter(action => action !== WITHDRAWN);
         }
         setValidActions(data);
         console.log("Valid Actions based on state:", data);
