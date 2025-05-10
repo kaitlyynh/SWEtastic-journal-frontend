@@ -9,11 +9,16 @@ const ManuscriptEP = `${BACKEND_URL}/manuscripts`;
 const ManuscriptSearchEP = `${BACKEND_URL}/manuscripts/search`;
 const Manuscript_Create_EP = `${BACKEND_URL}/manuscripts/create`;
 const AllStatesEP = `${BACKEND_URL}/manuscripts/ValidStates`;
+const userEmail = localStorage.getItem('email');
+const userRole = localStorage.getItem('role');
+  
+
 
 
 function peopleObjectToArray(Data) {
     const keys = Object.keys(Data);
     const people = keys.map((key) => Data[key]);
+    
     return people;
 }
 
@@ -28,6 +33,12 @@ function Manuscript() {
     const [searchQuery, setSearchQuery] = useState('');
     const [showForm, setShowForm] = useState(false);
     const [allValidStates, setAllValidStates] = useState([]);
+    const visibleManuscripts = manuscripts.filter((manu) => {
+        if (userRole?.toLowerCase() === 'au' || userRole?.toLowerCase() === 'author') {
+          return manu.author_email?.toLowerCase() === userEmail?.toLowerCase();
+        }
+        return true; // Editor or other roles can see all
+      });
 
     const fetchManuscripts = () => {
         axios.get(ManuscriptEP)
@@ -220,7 +231,7 @@ function Manuscript() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {manuscripts
+                                {/* {manuscripts
                                     .filter((manuscript) => {
                                         if (!manuscript || !manuscript.title) return false;
                                         return (
@@ -231,11 +242,11 @@ function Manuscript() {
                                     .map((manuscript, index) => (
                                         <tr key={index}>
                                             <td>{manuscript.title}</td>
-                                            <td>{manuscript.author}</td>
+                                            <td>{manuscript.author}</td> */}
                                             {/* <td>{manuscript.author_email}</td> */}
                                             {/* <td>{manuscript.abstract}</td> */}
                                             {/* <td>{manuscript.text}</td> */}
-                                            <td>{allValidStates[manuscript.curr_state]}</td>
+                                            {/*<td>{allValidStates[manuscript.curr_state]}</td>
                                             <td>
                                                 <Link
                                                     to={`/manuscripts/${encodeURIComponent(manuscript.title)}`}
@@ -246,7 +257,31 @@ function Manuscript() {
                                                 </Link>
                                             </td>
                                         </tr>
-                                    ))}
+                                    ))} */}
+                                    {visibleManuscripts
+                                        .filter((manuscript) => {
+                                            if (!manuscript || !manuscript.title) return false;
+                                            return (
+                                            searchQuery.trim() === "" ||
+                                            manuscript.title.toLowerCase().includes(searchQuery.toLowerCase().trim())
+                                            );
+                                        })
+                                        .map((manuscript, index) => (
+                                            <tr key={index}>
+                                            <td>{manuscript.title}</td>
+                                            <td>{manuscript.author}</td>
+                                            <td>{allValidStates[manuscript.curr_state]}</td>
+                                            <td>
+                                                <Link
+                                                to={`/manuscripts/${encodeURIComponent(manuscript.title)}`}
+                                                state={{ manuscript }}
+                                                className="btn btn-sm btn-outline-primary"
+                                                >
+                                                View/Edit
+                                                </Link>
+                                            </td>
+                                            </tr>
+                                        ))}
                             </tbody>
                         </table>
                     </div>

@@ -21,7 +21,7 @@ function ManuscriptDetails() {
 
   const role = localStorage.getItem('role');
 
-  const ManuscriptEP = `${BACKEND_URL}/manuscripts/${manuscript.title}`;
+  const ManuscriptEP = `${BACKEND_URL}/manuscripts/${encodeURIComponent(manuscript.title || '')}`;
   const RefEP = `${BACKEND_URL}/roles/RE`;
   const AllActionsEP = `${BACKEND_URL}/manuscripts/ValidActions`;
   const ActEP = `${BACKEND_URL}/manuscripts/ValidActions/${manuscript.curr_state}`;
