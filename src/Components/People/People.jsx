@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import './People.css';
 
-import { BACKEND_URL } from '../../constants';
+import { BACKEND_URL, EDITOR_ROLE } from '../../constants';
 import { FaTrashAlt, FaEdit } from "react-icons/fa";
 import { IoMdPersonAdd } from "react-icons/io";
 
@@ -13,6 +13,7 @@ const PEOPLE_READ_ENDPOINT = `${BACKEND_URL}/people`;
 const PEOPLE_CREATE_ENDPOINT = `${BACKEND_URL}/people/create`;
 const ROLES_ENDPOINT = `${BACKEND_URL}/roles`;
 const role = (localStorage.getItem("role") || "").toLowerCase();
+const isEditor = role.toUpperCase() === EDITOR_ROLE;
 
 
 function AddPersonForm({
@@ -260,7 +261,7 @@ function People() {
               <th>Email</th>
               <th>Affiliation</th>
               <th>Roles</th>
-              <th>Actions</th>
+              {isEditor && <th>Actions</th>}
             </tr>
           </thead>
           <tbody>
