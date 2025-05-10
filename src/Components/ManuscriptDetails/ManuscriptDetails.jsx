@@ -44,7 +44,8 @@ function ManuscriptDetails() {
         return axios.get(ActEP);
       })
       .then(({ data }) => {
-        if (role === 'ed') {
+        console.log("User's role is:", role)
+        if (role === 'ed' || role === 'ED') {
           data = data.filter(action => action !== 'WIT');
         }
         setValidActions(data);
