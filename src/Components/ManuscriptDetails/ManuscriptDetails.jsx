@@ -92,7 +92,10 @@ function ManuscriptDetails() {
         return axios.get(`${BACKEND_URL}/manuscripts/ValidActions/${data.curr_state}`);
       })
       .then(({ data }) => {
-        setValidActions(data);
+        const filteredActions = (role?.toUpperCase() === EDITOR_ROLE)
+          ? data.filter(action => action !== WITHDRAWN)
+          : data;
+        setValidActions(filteredActions);
       })
       .catch(err => setError(`Failed to refresh manuscript data: ${err.message}`));
   };
@@ -124,7 +127,7 @@ function ManuscriptDetails() {
     axios.put(receiveActionEP, payload, {
       headers: {
         'Content-Type': 'application/json',
-        // 'Accept': 'application/json',
+        'Accept': 'application/json',
       }
     })
 
