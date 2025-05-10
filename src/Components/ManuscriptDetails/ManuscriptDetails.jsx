@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { BACKEND_URL, EDITOR_ROLE, WITHDRAWN } from '../../constants';
+import { BACKEND_URL, EDITOR_ROLE, WITHDRAWN, AUTHOR_ROLE, ADD_REF, DEL_REF, REJECT } from '../../constants';
 import React from 'react';
 
 function ManuscriptDetails() {
@@ -47,7 +47,11 @@ function ManuscriptDetails() {
         console.log("User's role is:", role)
         if (role.toUpperCase() == EDITOR_ROLE) {
           data = data.filter(action => action !== WITHDRAWN);
+        } else if (role.toUpperCase() == AUTHOR_ROLE) {
+          // data = data.filter(action => action !== ADD_REF && action !== DEL_REF && action !== REJECT);
+          data = data.filter(action => action === WITHDRAWN);
         }
+        
         setValidActions(data);
         console.log("Valid Actions based on state:", data);
       })
@@ -89,16 +93,28 @@ function ManuscriptDetails() {
         const data = response.data;
         setManuscript(data);
         setAssignedReferees(data.referees || []);
+  
         return axios.get(`${BACKEND_URL}/manuscripts/ValidActions/${data.curr_state}`);
       })
-      .then(({ data }) => {
-        const filteredActions = (role?.toUpperCase() === EDITOR_ROLE)
-          ? data.filter(action => action !== WITHDRAWN)
-          : data;
+      .then((response) => {
+        const data = response.data;
+        let filteredActions = data;
+  
+        if (role?.toUpperCase() === EDITOR_ROLE) {
+          filteredActions = data.filter(action => action !== WITHDRAWN);
+        } else if (role?.toUpperCase() === AUTHOR_ROLE) {
+          filteredActions = data.filter(action => action !== ADD_REF && action !== DEL_REF && action !== REJECT); // Delete later
+          filteredActions = data.filter(action => action === WITHDRAWN);
+        }
+  
         setValidActions(filteredActions);
       })
-      .catch(err => setError(`Failed to refresh manuscript data: ${err.message}`));
+      .catch(err => {
+        console.error(err);
+        setError(`Failed to refresh manuscript data: ${err.message}`);
+      });
   };
+  
 
 
   const handleDelete = () => {
